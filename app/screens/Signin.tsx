@@ -2,15 +2,13 @@ import { useState } from 'react'
 import {
   Text, TextInput, TouchableOpacity, View,
 } from 'react-native'
-import { Login } from '../services/auth/auth.service'
+import { useAuthActions} from '../stores/authStore'
 
 const Signin: React.FC = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleLogin = async (email: string, password: string) => {
-    await Login({ email, password })
-  }
+  const { login } = useAuthActions()
 
   return (
     <View>
@@ -27,7 +25,7 @@ const Signin: React.FC = () => {
       />
 
       <TouchableOpacity
-        onPress={() => handleLogin(email, password)}
+        onPress={() => login({ email, password })}
       >
         <Text>login</Text>
       </TouchableOpacity>

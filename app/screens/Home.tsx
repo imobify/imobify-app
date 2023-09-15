@@ -1,15 +1,19 @@
 import { Text, TouchableOpacity, View } from 'react-native'
-import { logOut } from '../services/auth/auth.service'
+import { useAuthActions } from '../stores/authStore'
 
-const Home: React.FC = () => (
-  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text>Home screen</Text>
-    <TouchableOpacity
-      onPress={() => logOut()}
-    >
-      <Text>logout</Text>
-    </TouchableOpacity>
-  </View>
-)
+const Home: React.FC = () => {
+  const { signOut } = useAuthActions()
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home screen</Text>
+      <TouchableOpacity
+        onPress={() => signOut()}
+      >
+        <Text>logout</Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
 
 export default Home

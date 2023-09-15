@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { useAuthStore } from '../stores/authStore'
 
-const { isLoggedIn, token } = useAuthStore.getState()
+const { token } = useAuthStore.getState()
 
 const HTTP_STATUS_UNAUTHORIZED = 401
 
@@ -12,7 +12,7 @@ const apiClient = axios.create({
 })
 
 apiClient.interceptors.request.use((config) => {
-  if (isLoggedIn) {
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
 
@@ -23,7 +23,7 @@ apiClient.interceptors.response.use(
   (response) => (response),
   (error) => {
     if (error instanceof AxiosError && ((error?.status) != null) && error.status === HTTP_STATUS_UNAUTHORIZED) {
-      useAuthStore.getState().actions.signOut()
+      useAuthStore.getState().authActions.signOut()
     }
   },
 )
