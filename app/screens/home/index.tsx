@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View } from 'react-native'
-import { useAuthActions } from '../stores/authStore'
+import { useAuthActions } from '../../stores/authStore'
 
 const Home: React.FC = () => {
   const { signOut } = useAuthActions()

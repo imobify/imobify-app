@@ -1,17 +1,18 @@
-import { z } from 'zod'
+import * as yup from 'yup'
+import parseDateString from '../../utils/parseDateString'
 
-export const authResponseSchema = z.object({
-  access_token: z.string(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
-  name: z.string().trim(),
-  email: z.string().trim().email(),
-  phone: z.coerce.string().trim().min(10).max(11),
-  document: z.string().trim().min(11).max(14).regex(/^[0-9]+$/),
-  password: z.string().trim().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/),
-  type_id: z.union([z.literal(1), z.literal(2)]),
-  avatar_url: z.string().nullable(),
-  avatar_public_id: z.string().nullable(),
+export const authResponseSchema = yup.object({
+  id: yup.string().uuid().trim().required(),
+  access_token: yup.string().trim().required(),
+  createdAt: yup.date().transform(parseDateString).required(),
+  updatedAt: yup.date().required(),
+  name: yup.string().trim().required(),
+  email: yup.string().trim().email().required(),
+  phone: yup.string().trim().min(10).max(11).matches(/^[0-9]+$/).required(),
+  document: yup.string().trim().min(11).max(14).matches(/^[0-9]+$/).required(),
+  type_id: yup.number().min(1).max(2).required(),
+  avatar_url: yup.string().url().nullable(),
+  avatar_public_id: yup.string().nullable(),
 })
 
-export type AuthResponse = z.infer<typeof authResponseSchema>;
+export type AuthResponse = yup.InferType<typeof authResponseSchema>

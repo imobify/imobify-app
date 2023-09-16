@@ -1,10 +1,10 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import Home from '../screens/Home'
-import Profile from '../screens/Profile'
-import Leads from '../screens/Leads'
-import Favorites from '../screens/Favorites'
+import Home from '../screens/home'
+import Profile from '../screens/profile'
+import Leads from '../screens/leads'
+import Favorites from '../screens/favorites'
 
 const Tab = createMaterialBottomTabNavigator()
 

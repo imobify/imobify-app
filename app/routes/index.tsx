@@ -1,39 +1,25 @@
 import { NavigationContainer } from '@react-navigation/native'
-import { useUser, useLoading } from '../stores/authStore'
+
+import { useUser } from '../stores/authStore'
 import AppNavigator from './app.routes'
 import AuthNavigator from './auth.routes'
-import { useEffect } from 'react'
-import { getItem } from '../utils/asyncStorage'
-import SplashScreen from '../screens/SplashScreen'
-
 
 const Navigation: React.FC = () => {
-  const { loading, setLoading } = useLoading()
-  const { token, setUser } = useUser()
-
-  useEffect(() => {
-    getItem<string>('imobify-auth-token')
-      .then((token) => {
-        if (token) {
-          setUser(token)
-        }
-
-        setLoading(false)
-      })
-  }, [setLoading, setUser])
+  const { token, userType } = useUser()
 
   const renderNavigation = () => {
-    if (loading) {
-      return (
-        <SplashScreen />
-      )
-    }
+    if (!token) return <AuthNavigator />
 
-    return token ? (
+    return userType === 1 ? (
       <AppNavigator />
     ) : (
-      <AuthNavigator />
+      <AppNavigator />
     )
+    // return token ? (
+    //   <AppNavigator />
+    // ) : (
+    //   <AuthNavigator />
+    // )
   }
 
   return (
