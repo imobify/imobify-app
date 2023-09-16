@@ -29,9 +29,12 @@ yarn android
 
 ## 💻 Tech
 
-- [React Native](https://reactnative.dev/) e [Expo](https://expo.dev/) - Framework for multiplatform app development using React.
+- [React Native](https://reactnative.dev/) with [Expo](https://expo.dev/) - Framework for multiplatform app development using React.
+- [React Query/Tanstack Query](https://tanstack.com/query/latest/docs/react/overview) - Data fetching and server state management.
 - [Zustand](https://zustand-demo.pmnd.rs/) - Minimalist global state management library.
 - [React Native Paper](https://reactnativepaper.com/) - Standard-compliant Material Design component library.
+- [Formik](https://formik.org/) - Creation and validation of forms.
+- [Yup](https://github.com/jquense/yup) - Schema based object validation.
 
 ## ⚙️ Utilities
 

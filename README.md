@@ -30,9 +30,12 @@ yarn android
 
 ## 💻 Tecnologias
 
-- [React Native](https://reactnative.dev/) e [Expo](https://expo.dev/) - Framework para desenvolvimento de aplicativos multiplataforma utilizando React.
+- [React Native](https://reactnative.dev/) com [Expo](https://expo.dev/) - Framework para desenvolvimento de aplicativos multiplataforma utilizando React.
+- [React Query/Tanstack Query](https://tanstack.com/query/latest/docs/react/overview) - Requisições de dados e gerenciamento de estado do servidor.
 - [Zustand](https://zustand-demo.pmnd.rs/) - Biblioteca minimalista para gerenciamento de estado global.
 - [React Native Paper](https://reactnativepaper.com/) - Biblioteca de componentes no padrão Material Design.
+- [Formik](https://formik.org/) - Criação e validação de formulários.
+- [Yup](https://github.com/jquense/yup) - Validação de objetos por meio de *schemas*.
 
 ## ⚙️ Utilitários
 
