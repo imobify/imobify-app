@@ -5,13 +5,13 @@ import Signin from '../screens/signin'
 import Signup from '../screens/signup'
 import PickType from '../screens/user-type'
 import Access from '../screens/access'
-import { SignupForm } from '../screens/signup/schemas/signup-form'
+import { SignupFormType } from '../screens/signup/schemas/signup-form'
 
 export type AuthStackParamList = {
-  SigninOrRegister: undefined,
-  Signin: undefined,
-  Signup: undefined,
-  PickType: SignupForm
+  access: undefined,
+  signin: undefined,
+  signup: undefined,
+  'pick-type': SignupFormType
 }
 
 const Stack = createNativeStackNavigator<AuthStackParamList>()
@@ -21,32 +21,32 @@ const AuthNavigator: React.FC = () => {
 
   return (
     <Stack.Navigator 
-      initialRouteName='SigninOrRegister' 
+      initialRouteName='access' 
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen
-        name="SigninOrRegister"
+        name="access"
         component={Access}
         options={{
           animationTypeForReplace: token ? 'push' : 'pop',
         }}
       />
       <Stack.Screen
-        name="Signin"
+        name="signin"
         component={Signin}
         options={{
           animationTypeForReplace: token ? 'push' : 'pop',
         }}
       />
       <Stack.Screen
-        name="Signup"
+        name="signup"
         component={Signup}
         options={{
           animationTypeForReplace: token ? 'push' : 'pop',
         }}
       />
       <Stack.Screen
-        name="PickType"
+        name="pick-type"
         component={PickType}
         options={{
           animationTypeForReplace: token ? 'push' : 'pop',

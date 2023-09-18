@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   image: {
     height: screen.height / 1.5,
     transform : [ { scaleX : 0.5 } ],
-    backgroundColor : theme.colors.primary,
+    backgroundColor : theme.colors.tertiary,
     alignItems : 'center',
     justifyContent : 'center'
   },
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 50,
   },
   loginTitle: {
-    color: theme.colors.tertiary,
+    color: theme.colors.primary,
     marginBottom: 24
   },
   formInput: {

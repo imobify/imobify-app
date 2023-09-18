@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center'
   },
   loginBtn: {
-    color: theme.colors.primary
+    color: theme.colors.tertiary
   },
   signupBtn: {
     color: theme.colors.surface

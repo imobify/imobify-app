@@ -1,18 +1,14 @@
 import { View } from 'react-native'
 import { TextInput, Button, Text } from 'react-native-paper'
-import { theme } from '../../../theme'
-import { styles } from '../styles'
-import { useNavigation } from '@react-navigation/native'
-import { AuthStackParamList } from '../../../routes/auth.routes'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Formik } from 'formik'
+
 import { signinFormSchema } from '../schemas/signin-form'
 import { useAuthActions } from '../../../stores/authStore'
 
-type NavigationType = NativeStackScreenProps<AuthStackParamList, 'Signin'>
+import { theme } from '../../../theme'
+import { styles } from '../styles'
 
 const SigninForm = () => {
-  const { navigation } = useNavigation<NavigationType>()
   const { login } = useAuthActions()
 
   return (
@@ -60,22 +56,9 @@ const SigninForm = () => {
               mode='contained'
               onPress={() => handleSubmit()}
               disabled={isSubmitting}
+              buttonColor={theme.colors.primary}
             >
               <Text variant='titleMedium' style={{ color: theme.colors.surface }}>Entrar</Text>
-            </Button>
-            <Button
-              style={styles.formInput}
-              mode='text'
-              disabled={isSubmitting}
-              onPress={() => navigation.navigate('Signup')}
-            >
-              <Text variant='titleMedium' style={{ color: theme.colors.surface }}>
-                    Não possui uma conta? {
-                  <Text variant='titleMedium' style={{ color: theme.colors.tertiary }}>
-                        Cadastre-se
-                  </Text>
-                }
-              </Text>
             </Button>
           </>
         )}

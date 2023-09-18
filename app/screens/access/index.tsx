@@ -1,28 +1,30 @@
-import { View } from 'react-native'
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { ImageBackground, View } from 'react-native'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Button, Text } from 'react-native-paper'
-
-import Background from '../../components/Background'
-import LogoWithTitle from '../../components/LogoWithTitle'
+import LogoWithTitle from '../../components/logo-with-title'
 import { AuthStackParamList } from '../../routes/auth.routes'
 
 import { styles } from './styles'
 import { theme } from '../../theme'
 
-type Props = NativeStackScreenProps<AuthStackParamList, 'SigninOrRegister'>
+type Props = NativeStackScreenProps<AuthStackParamList, 'access'>
+
+const background = require('../../../assets/access-background.png')
 
 const Access: React.FC<Props> = ({ navigation }: Props) => {
   return (
-    <Background>
+    <ImageBackground source={background} resizeMode='cover' style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <LogoWithTitle />
         <View style={styles.buttonGroup}>
           <Button
-            onPress={() => navigation.navigate('Signin')} 
+            onPress={() => navigation.navigate('signin')} 
             contentStyle={styles.button} 
             mode='contained' 
             buttonColor={theme.colors.surface} 
-            textColor={theme.colors.primary}
+            textColor={theme.colors.tertiary}
           >
             <Text 
               variant='titleMedium' 
@@ -32,7 +34,7 @@ const Access: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
           </Button>
           <Button 
-            onPress={() => navigation.navigate('Signup')} 
+            onPress={() => navigation.navigate('signup')} 
             contentStyle={styles.button} 
             mode='text'
           >
@@ -45,7 +47,7 @@ const Access: React.FC<Props> = ({ navigation }: Props) => {
           </Button>
         </View>
       </View>
-    </Background>
+    </ImageBackground>
   )
 }
 
