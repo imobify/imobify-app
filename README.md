@@ -1,5 +1,5 @@
 <h1 align="center">Imobify</h1>
-<p align="center">Read in <a href="https://github.com/imobify/imobify-app/blob/main/READ.en.md">English</a></p>
+<p align="center">Read in <a href="https://github.com/imobify/imobify-app/blob/main/README.en.md">English</a></p>
 
 ## 🔧 Instalação
 
