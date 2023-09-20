@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import React from 'react'
 import { AuthStackParamList } from '../../../routes/auth.routes'
 import { useNavigation } from '@react-navigation/native'
@@ -9,16 +9,15 @@ import { Button, Text, TextInput } from 'react-native-paper'
 import { theme } from '../../../theme'
 import { styles } from '../styles'
 
-type NavigationType = NativeStackScreenProps<AuthStackParamList, 'signin'>
+type NavigationType = NativeStackNavigationProp<AuthStackParamList, 'signup'>
 
 const SignupForm = () => {
-  const { navigation } = useNavigation<NavigationType>()
+  const navigation = useNavigation<NavigationType>()
 
   const handleInitialSubmit = (data: SignupFormType) => {
-    console.log(data)
     navigation.navigate('pick-type', data)
   }
-  
+   
   return (
     <ScrollView>
       <Formik
