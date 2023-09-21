@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -5,6 +6,7 @@ import Profile from '@screens/shared/profile'
 import Leads from '@screens/shared/leads'
 import Favorites from '@screens/seeker/favorites'
 import HomeNavigator from './home.routes'
+import { theme } from '@theme'
 
 export type SeekerTabsParamsList = {
   home: undefined,
@@ -20,6 +22,10 @@ const SeekerNavigator: React.FC = () => (
     initialRouteName='home'
     backBehavior='order'
     shifting={true}
+    activeColor={theme.colors.primary}
+    inactiveColor={theme.colors.primary}
+    barStyle={{ backgroundColor: theme.colors.secondary }}
+    labelMaxFontSizeMultiplier={2}
   >
     <Tab.Screen
       name="home"

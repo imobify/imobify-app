@@ -25,6 +25,7 @@ export const theme: MD3Theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: '#1E303A',
+    secondaryContainer: '#569490',
     secondary: '#7dc1c1',
     tertiary: '#61a8a3',
   },
