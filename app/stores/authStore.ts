@@ -7,8 +7,6 @@ import axios from 'axios'
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL
 
 type AuthState = {
-  loading: boolean
-  setLoading: (value: boolean) => void
   token: string | null
   setUser: (token: string) => void
   userType: number | undefined
@@ -28,8 +26,6 @@ type JwtData = {
 };
 
 export const useAuthStore = create<AuthState>()((set) => ({
-  loading: true,
-  setLoading: (loading: boolean) => set({ loading }),
   token: null,
   setUser: (token: string) => {
     const { user_type } = jwtDecode<JwtData>(token)
@@ -84,10 +80,6 @@ export const useAuthStore = create<AuthState>()((set) => ({
 }))
 
 // hooks
-type useLoading = {
-  loading: boolean
-  setLoading: (value: boolean) => void
-}
 
 type useUser = {
   token: string | null
@@ -95,6 +87,5 @@ type useUser = {
   userType: number | undefined
 }
 
-export const useLoading = (): useLoading => useAuthStore(({ loading, setLoading }) => ({ loading, setLoading }))
 export const useUser = (): useUser => useAuthStore(({ token, setUser, userType }) => ({ token, setUser, userType }))
 export const useAuthActions = (): AuthActions => useAuthStore((state) => state.authActions)
