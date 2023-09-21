@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native'
-import { theme } from '../../theme'
+import { theme } from '@theme'
 
 const screen = Dimensions.get('screen')
 
@@ -26,10 +26,6 @@ export const styles = StyleSheet.create({
   formContainer: {
     marginTop: 32,
     paddingHorizontal: 50,
-  },
-  loginTitle: {
-    color: theme.colors.primary,
-    marginBottom: 24
   },
   formInput: {
     marginTop: 16

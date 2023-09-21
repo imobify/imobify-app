@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 
-const Profile = () => {
+const Profile: React.FC = () => {
   return (
     <View>
       <Text>

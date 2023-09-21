@@ -1,25 +1,18 @@
 import { NavigationContainer } from '@react-navigation/native'
 
-import { useUser } from '../stores/authStore'
-import AppNavigator from './app.routes'
+import AppNavigator from './seeker.routes'
 import AuthNavigator from './auth.routes'
+import { useUser } from '../stores/authStore'
 
 const Navigation: React.FC = () => {
-  const { token, userType } = useUser()
+  const { token } = useUser()
 
   const renderNavigation = () => {
     if (!token) return <AuthNavigator />
 
-    return userType === 1 ? (
-      <AppNavigator />
-    ) : (
+    return (
       <AppNavigator />
     )
-    // return token ? (
-    //   <AppNavigator />
-    // ) : (
-    //   <AuthNavigator />
-    // )
   }
 
   return (

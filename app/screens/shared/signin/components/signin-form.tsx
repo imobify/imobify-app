@@ -3,9 +3,9 @@ import { TextInput, Button, Text } from 'react-native-paper'
 import { Formik } from 'formik'
 
 import { signinFormSchema } from '../schemas/signin-form'
-import { useAuthActions } from '../../../stores/authStore'
+import { useAuthActions } from '@stores/authStore'
 
-import { theme } from '../../../theme'
+import { theme } from '@theme'
 import { styles } from '../styles'
 
 const SigninForm = () => {

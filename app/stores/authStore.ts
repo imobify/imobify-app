@@ -84,7 +84,17 @@ export const useAuthStore = create<AuthState>()((set) => ({
 }))
 
 // hooks
+type useLoading = {
+  loading: boolean
+  setLoading: (value: boolean) => void
+}
 
-export const useLoading = () => useAuthStore(({ loading, setLoading }) => ({ loading, setLoading }))
-export const useUser = () => useAuthStore(({ token, setUser, userType }) => ({ token, setUser, userType }))
+type useUser = {
+  token: string | null
+  setUser: (token: string) => void
+  userType: number | undefined
+}
+
+export const useLoading = (): useLoading => useAuthStore(({ loading, setLoading }) => ({ loading, setLoading }))
+export const useUser = (): useUser => useAuthStore(({ token, setUser, userType }) => ({ token, setUser, userType }))
 export const useAuthActions = (): AuthActions => useAuthStore((state) => state.authActions)

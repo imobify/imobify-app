@@ -3,15 +3,15 @@
 import { ImageBackground, View } from 'react-native'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Button, Text } from 'react-native-paper'
-import LogoWithTitle from '../../components/logo-with-title'
-import { AuthStackParamList } from '../../routes/auth.routes'
+import LogoWithTitle from '@components/logo-with-title'
+import { AuthStackParamList } from '@routes/auth.routes'
 
 import { styles } from './styles'
-import { theme } from '../../theme'
+import { theme } from '@theme'
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'access'>
 
-const background = require('../../../assets/access-background.png')
+const background = require('../../../../assets/access-background.png')
 
 const Access: React.FC<Props> = ({ navigation }: Props) => {
   return (

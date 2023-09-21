@@ -1,6 +1,6 @@
 import { Button, Text } from 'react-native-paper'
 
-import { theme } from '../theme'
+import { theme } from '@theme'
 import { GestureResponderEvent, StyleSheet } from 'react-native'
 
 type Props = {

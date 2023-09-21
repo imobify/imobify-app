@@ -2,10 +2,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { PaperProvider } from 'react-native-paper'
 
-import { theme } from './app/theme'
 import { StatusBar } from 'expo-status-bar'
-import Navigation from './app/routes'
-import useCachedResources from './app/hooks/useCachedResources'
+import { theme } from '@theme'
+import Navigation from '@routes/index'
+import useCachedResources from '@hooks/useCachedResources'
 
 const queryClient = new QueryClient()
 

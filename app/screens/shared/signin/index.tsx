@@ -4,11 +4,11 @@ import { SafeAreaView, View } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Image } from 'expo-image'
 
-import { CustomText } from '../../components/custom-text'
-import RedirectLink from '../../components/redirect-link'
-import { AuthStackParamList } from '../../routes/auth.routes'
+import CustomTitle from '@components/custom-title'
+import RedirectLink from '@components/redirect-link'
+import { AuthStackParamList } from '@routes/auth.routes'
 
-const townBackground = require('../../../assets/town-background.png')
+const townBackground = require('../../../../assets/town-background.png')
 import { styles } from './styles'
 import SigninForm from './components/signin-form'
 
@@ -25,7 +25,7 @@ const Signin: React.FC<Props> = ({ navigation }: Props) => {
         />
       </View>
       <View style={styles.formContainer}>
-        <CustomText style={styles.loginTitle} variant='title'>Login</CustomText>
+        <CustomTitle>Login</CustomTitle>
         <SigninForm />
         <RedirectLink
           firstText='Não possui uma conta?'

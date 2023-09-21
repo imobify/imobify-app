@@ -3,19 +3,19 @@
 import { styles } from './styles'
 import SignupForm from './components/signup-form'
 import { ImageBackground, View } from 'react-native'
-import { CustomText } from '../../components/custom-text'
-import RedirectLink from '../../components/redirect-link'
+import CustomTitle from '@components/custom-title'
+import RedirectLink from '@components/redirect-link'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { AuthStackParamList } from '../../routes/auth.routes'
+import { AuthStackParamList } from '@routes/auth.routes'
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'signup'>
 
-const background = require('../../../assets/signup-background.png')
+const background = require('../../../../assets/signup-background.png')
 
 const Signup: React.FC<Props> = ({ navigation }: Props) => (
   <ImageBackground source={background} resizeMode='cover' style={styles.container}>
     <View style={styles.formContainer}>
-      <CustomText style={styles.loginTitle} variant='title'>Login</CustomText>
+      <CustomTitle>Login</CustomTitle>
       <SignupForm />
       <RedirectLink
         firstText='Já possui uma conta?'

@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native'
-import { theme } from '../../theme'
 
 
 export const styles = StyleSheet.create({
@@ -12,9 +11,6 @@ export const styles = StyleSheet.create({
   formContainer: {
     marginTop: 32,
     paddingHorizontal: 50,
-  },
-  loginTitle: {
-    color: theme.colors.primary
   },
   formInput: {
     marginTop: 16

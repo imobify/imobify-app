@@ -1,17 +1,17 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import { useUser } from '../stores/authStore'
-import Signin from '../screens/signin'
-import Signup from '../screens/signup'
-import PickType from '../screens/user-type'
-import Access from '../screens/access'
-import { SignupFormType } from '../screens/signup/schemas/signup-form'
+import { useUser } from '@stores/authStore'
+import Signin from '@screens/shared/signin'
+import Signup from '@screens/shared/signup'
+import PickType from '@screens/shared/user-type'
+import Access from '@screens/shared/access'
+import { SignupFormType } from '@screens/shared/signup/schemas/signup-form'
 
 export type AuthStackParamList = {
   access: undefined,
   signin: undefined,
   signup: undefined,
-  'pick-type': SignupFormType
+  userType: SignupFormType
 }
 
 const Stack = createNativeStackNavigator<AuthStackParamList>()
@@ -46,7 +46,7 @@ const AuthNavigator: React.FC = () => {
         }}
       />
       <Stack.Screen
-        name="pick-type"
+        name="userType"
         component={PickType}
         options={{
           animationTypeForReplace: token ? 'push' : 'pop',

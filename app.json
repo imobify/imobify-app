@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "imobify-app",
+    "name": "Imobify",
     "slug": "imobify-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,6 +25,13 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      ["expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permita o $(PRODUCT_NAME) usar sua localização."
+        }
+      ]
+    ]
   }
 }

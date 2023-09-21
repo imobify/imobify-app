@@ -5,20 +5,20 @@ import { useRoute, type RouteProp } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Text } from 'react-native-paper'
 
-import { CustomText } from '../../components/custom-text'
-import PickTypeCard from '../../components/pick-type-card'
-import { AuthStackParamList } from '../../routes/auth.routes'
-import { useAuthActions } from '../../stores/authStore'
+import CustomTitle from '@components/custom-title'
+import PickTypeCard from '@components/pick-type-card'
+import { AuthStackParamList } from '@routes/auth.routes'
+import { useAuthActions } from '@stores/authStore'
 
 
 import { styles } from './styles'
 
-const background = require('../../../assets/user-type-background.png')
-const announcerImage = require('../../../assets/announce.png')
-const searchImage = require('../../../assets/search.png')
+const background = require('../../../../assets/user-type-background.png')
+const announcerImage = require('../../../../assets/announce.png')
+const searchImage = require('../../../../assets/search.png')
 
-type Props = NativeStackScreenProps<AuthStackParamList, 'pick-type'>
-type RouteType = RouteProp<AuthStackParamList, 'pick-type'>
+type Props = NativeStackScreenProps<AuthStackParamList, 'userType'>
+type RouteType = RouteProp<AuthStackParamList, 'userType'>
 
 const PickType: React.FC<Props> = () => {
   const route = useRoute<RouteType>()
@@ -44,7 +44,7 @@ const PickType: React.FC<Props> = () => {
       style={styles.container}
     >
       <View style={styles.content}>
-        <CustomText variant="title">Olá!</CustomText>
+        <CustomTitle>Olá!</CustomTitle>
         <Text variant="titleMedium">Qual é seu objetivo no Imobify?</Text>
         <PickTypeCard
           header="Anunciar"

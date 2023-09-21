@@ -1,13 +1,13 @@
 import { View, Text } from 'react-native'
 
-const RealEstates = () => {
+const RealEstateList = () => {
   return (
     <View>
       <Text>
-        RealEstates screen!
+        RealEstate List screen!
       </Text>
     </View>
   )
 }
 
-export default RealEstates
+export default RealEstateList
