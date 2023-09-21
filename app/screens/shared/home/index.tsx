@@ -6,11 +6,18 @@ import { HomeStackParamsList } from '@routes/home.routes'
 import useLocation from '@hooks/useLocation'
 import { styles } from './styles'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import Loading from '@components/loading'
 
 type Props = NativeStackScreenProps<HomeStackParamsList, 'map'>
 
 const Home: React.FC<Props> = () => {
   const { mapRef, location } = useLocation()
+
+  if (!location) {
+    return (
+      <Loading />
+    )
+  }
 
   return (
     <SafeAreaView style={styles.container}>
