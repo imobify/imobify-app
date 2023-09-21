@@ -3,12 +3,15 @@ import { NavigationContainer } from '@react-navigation/native'
 import AppNavigator from './seeker.routes'
 import AuthNavigator from './auth.routes'
 import { useUser } from '../stores/authStore'
+import configureAxios from '@services/client'
 
 const Navigation: React.FC = () => {
   const { token } = useUser()
 
   const renderNavigation = () => {
     if (!token) return <AuthNavigator />
+
+    configureAxios()
 
     return (
       <AppNavigator />

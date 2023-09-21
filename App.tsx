@@ -13,6 +13,7 @@ const queryClient = new QueryClient()
 const App: React.FC = () => {
   const isLoadingComplete = useCachedResources()
 
+
   if (!isLoadingComplete) {
     return null
   }

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import jwtDecode from 'jwt-decode'
 import { removeItem, setItem } from '../utils/asyncStorage'
-import { AuthResponse, Signin, signinSchema, Signup, signupSchema } from '../types/auth'
+import { AuthResponse, Signin, signinSchema, Signup, signupSchema } from '@models/auth'
 import axios from 'axios'
 
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL
