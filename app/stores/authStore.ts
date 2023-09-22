@@ -9,6 +9,7 @@ const BASE_URL = process.env.EXPO_PUBLIC_API_URL
 type AuthState = {
   token: string | null
   setUser: (token: string) => void
+  userId: string | undefined
   userType: number | undefined
   authActions: AuthActions
 };
@@ -21,16 +22,17 @@ type AuthActions = {
 
 type JwtData = {
   sub: string,
-  user_type: number,
+  type_id: number,
   iat: string
 };
 
 export const useAuthStore = create<AuthState>()((set) => ({
   token: null,
+  userId: undefined,
   setUser: (token: string) => {
-    const { user_type } = jwtDecode<JwtData>(token)
+    const { sub, type_id } = jwtDecode<JwtData>(token)
 
-    set({ userType: user_type, token })
+    set({ userType: type_id, token, userId: sub })
   },
   userType: undefined,
   authActions: {
@@ -43,11 +45,11 @@ export const useAuthStore = create<AuthState>()((set) => ({
           return 
         }
         
-        const { user_type } = jwtDecode<JwtData>(data.access_token)
+        const { sub, type_id } = jwtDecode<JwtData>(data.access_token)
   
         await setItem('imobify-auth-token', JSON.stringify(data.access_token))
   
-        set({ token: data.access_token, userType: user_type })
+        set({ token: data.access_token, userType: type_id, userId: sub })
       } catch (error) {
         console.error('LOGIN', error)
         throw error
@@ -62,11 +64,11 @@ export const useAuthStore = create<AuthState>()((set) => ({
           return 
         }
         
-        const { user_type } = jwtDecode<JwtData>(data.access_token)
+        const { sub, type_id } = jwtDecode<JwtData>(data.access_token)
   
         await setItem('imobify-auth-token', JSON.stringify(data.access_token))
   
-        set({ token: data.access_token, userType: user_type })
+        set({ token: data.access_token, userType: type_id, userId: sub })
       } catch (error) {
         console.error('REGISTER', error)
         throw error
@@ -74,7 +76,7 @@ export const useAuthStore = create<AuthState>()((set) => ({
     },
     signOut: async () => {
       await removeItem('imobify-auth-token')
-      set({ token: null, userType: undefined })
+      set({ token: null, userType: undefined, userId: undefined })
     }
   },
 }))
@@ -85,7 +87,8 @@ type useUser = {
   token: string | null
   setUser: (token: string) => void
   userType: number | undefined
+  userId: string | undefined
 }
 
-export const useUser = (): useUser => useAuthStore(({ token, setUser, userType }) => ({ token, setUser, userType }))
+export const useUser = (): useUser => useAuthStore(({ token, setUser, userType, userId }) => ({ token, setUser, userType, userId }))
 export const useAuthActions = (): AuthActions => useAuthStore((state) => state.authActions)

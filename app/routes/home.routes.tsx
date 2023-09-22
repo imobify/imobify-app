@@ -6,7 +6,7 @@ import RealEstate from '@screens/shared/real-estate'
 
 export type HomeStackParamsList = {
   map: undefined,
-  realEstate: undefined
+  realEstate: { id: number }
 }
 
 const Stack = createNativeStackNavigator<HomeStackParamsList>()

@@ -43,7 +43,7 @@ const AnnouncerNavigator: React.FC = () => (
       options={{
         tabBarLabel: 'Interesses',
         tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="home" color={color} size={32} />
+          <MaterialCommunityIcons name="home-alert" color={color} size={32} />
         )
       }}
     />
@@ -51,9 +51,9 @@ const AnnouncerNavigator: React.FC = () => (
       name="realEstateList"
       component={RealEstateList}
       options={{
-        tabBarLabel: 'Favoritos',
+        tabBarLabel: 'Meus imóveis',
         tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="heart" color={color} size={32} />
+          <MaterialCommunityIcons name="home-edit" color={color} size={32} />
         )
       }}
     />
