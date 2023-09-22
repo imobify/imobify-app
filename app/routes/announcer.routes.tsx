@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import HomeNavigator from './home.routes'
@@ -7,12 +8,38 @@ import Profile from '@screens/shared/profile'
 import Leads from '@screens/shared/leads'
 import RealEstateList from '@screens/announcer/real-estates'
 import { theme } from '@theme'
+import EditRealEstate from '@screens/announcer/edit-real-estate'
+
+export type RealEstateStackParamList = {
+  list: undefined,
+  edit: { id: number }
+}
+
+const RealEstateStack = createNativeStackNavigator<RealEstateStackParamList>()
+
+const RealEstateNavigator: React.FC = () => {
+  return (
+    <RealEstateStack.Navigator
+      initialRouteName='list' 
+      screenOptions={{ headerShown: false }}
+    >
+      <RealEstateStack.Screen
+        name='list'
+        component={RealEstateList}
+      />
+      <RealEstateStack.Screen
+        name='edit'
+        component={EditRealEstate}
+      />
+    </RealEstateStack.Navigator>
+  )
+}
 
 export type AnnouncerTabsParamList = {
   home: undefined,
   profile: undefined,
   leads: undefined,
-  realEstateList: undefined
+  realEstateRoutes: undefined
 }
 
 const Tab = createMaterialBottomTabNavigator<AnnouncerTabsParamList>()
@@ -48,8 +75,8 @@ const AnnouncerNavigator: React.FC = () => (
       }}
     />
     <Tab.Screen
-      name="realEstateList"
-      component={RealEstateList}
+      name="realEstateRoutes"
+      component={RealEstateNavigator}
       options={{
         tabBarLabel: 'Meus imóveis',
         tabBarIcon: ({ color }) => (

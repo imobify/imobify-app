@@ -1,7 +1,6 @@
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import MapView, { Marker } from 'react-native-maps'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-// import { MaterialBottomTabScreenProps } from '@react-navigation/material-bottom-tabs'
 
 import { HomeStackParamsList } from '@routes/home.routes'
 import useLocation from '@hooks/useLocation'
@@ -14,10 +13,9 @@ import { theme } from '@theme'
 
 type Props = NativeStackScreenProps<HomeStackParamsList, 'map'>
 
-
-const Home: React.FC<Props> = () => {
+const Home: React.FC<Props> = ({ navigation }: Props) => {
   const { location } = useLocation()
-  const { data, isLoading, error } = useNearbyRealEstates(location?.coords)
+  const { data, isLoading, isError } = useNearbyRealEstates(location?.coords)
 
   if (!location || isLoading || !data) {
     return (
@@ -25,7 +23,7 @@ const Home: React.FC<Props> = () => {
     )
   }
 
-  if (error) {
+  if (isError) {
     return (
       <SafeAreaView style={styles.container}>
         <Text>ERROR...</Text>
@@ -60,6 +58,7 @@ const Home: React.FC<Props> = () => {
               longitude: realEstate.longitude,
               latitude: realEstate.latitude
             }}
+            onPress={() => navigation.navigate('realEstate', { id: realEstate.id })}
           >
             <MaterialCommunityIcons name='map-marker-radius' color={theme.colors.tertiary} size={48} />
           </Marker>
