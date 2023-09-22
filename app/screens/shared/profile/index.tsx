@@ -1,12 +1,14 @@
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from './styles'
 import { Button, Text } from 'react-native-paper'
-import { useAuthActions } from '@stores/authStore'
+import { useAuthActions, useUser } from '@stores/authStore'
 
 const Profile: React.FC = () => {
   const { signOut } = useAuthActions()
+  const { userType } = useUser()
   return (
     <SafeAreaView style={styles.container}>
+      <Text>{userType?.toString()}</Text>
       <Button
         onPress={() => signOut()}
       >
