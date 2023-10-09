@@ -1,14 +1,13 @@
 import { customText } from 'react-native-paper'
-import { PropsWithChildren } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, TextStyle } from 'react-native'
 import { theme } from '@theme'
 
 const CustomText = customText<'title'>()
 
-type Props = PropsWithChildren
+type Props = { children: React.ReactNode, style?: TextStyle }
 
-const CustomTitle: React.FC<Props> = ({ children }: Props) => (
-  <CustomText style={styles.title} variant='title'>
+const CustomTitle: React.FC<Props> = ({ children, style }: Props) => (
+  <CustomText style={{...style, ...styles.title}} variant='title'>
     {children}
   </CustomText>
 )

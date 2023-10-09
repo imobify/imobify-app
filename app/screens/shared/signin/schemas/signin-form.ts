@@ -14,4 +14,4 @@ export const signinFormSchema = yup.object({
     .required('O campo senha é obrigatório!')
 })
 
-export type SigninForm = yup.InferType<typeof signinFormSchema>
+export type SigninFormType = yup.InferType<typeof signinFormSchema>

@@ -4,11 +4,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import HomeNavigator from './home.routes'
-import Profile from '@screens/shared/profile'
 import Leads from '@screens/shared/leads'
 import RealEstateList from '@screens/announcer/real-estates'
 import { theme } from '@theme'
 import EditRealEstate from '@screens/announcer/edit-real-estate'
+import ProfileNavigator from './profile.routes'
 
 export type RealEstateStackParamList = {
   list: undefined,
@@ -86,7 +86,7 @@ const AnnouncerNavigator: React.FC = () => (
     />
     <Tab.Screen
       name="profile"
-      component={Profile}
+      component={ProfileNavigator}
       options={{
         tabBarLabel: 'Meu Perfil',
         tabBarIcon: ({ color }) => (

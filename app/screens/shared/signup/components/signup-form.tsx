@@ -1,11 +1,11 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import React from 'react'
-import { AuthStackParamList } from '@routes/auth.routes'
-import { useNavigation } from '@react-navigation/native'
+import { useState } from 'react'
 import { ScrollView } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { Formik } from 'formik'
-import { SignupFormType, signupFormSchema } from '../schemas/signup-form'
 import { Button, Text, TextInput } from 'react-native-paper'
+import { AuthStackParamList } from '@routes/auth.routes'
+import { SignupFormType, signupFormSchema } from '../schemas/signup-form'
 import { theme } from '@theme'
 import { styles } from '../styles'
 
@@ -13,9 +13,19 @@ type NavigationType = NativeStackNavigationProp<AuthStackParamList, 'signup'>
 
 const SignupForm = () => {
   const navigation = useNavigation<NavigationType>()
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleInitialSubmit = (data: SignupFormType) => {
     navigation.navigate('userType', data)
+  }
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword)
+  }
+
+  const toggleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword)
   }
    
   return (
@@ -45,7 +55,9 @@ const SignupForm = () => {
               placeholder='Digite seu CPF/CNPJ.'
             />
             {touched.document && errors.document ? (
-              <Text>
+              <Text
+                style={styles.errorMessage}
+              >
                 {errors.document}
               </Text>
 
@@ -60,7 +72,9 @@ const SignupForm = () => {
               placeholder='Digite seu nome.'
             />
             {touched.name && errors.name ? (
-              <Text>
+              <Text
+                style={styles.errorMessage}
+              >
                 {errors.name}
               </Text>
 
@@ -76,7 +90,9 @@ const SignupForm = () => {
               placeholder='Digite seu email.'
             />
             {touched.email && errors.email ? (
-              <Text>
+              <Text
+                style={styles.errorMessage}
+              >
                 {errors.email}
               </Text>
 
@@ -92,39 +108,45 @@ const SignupForm = () => {
               placeholder='Digite seu telefone ou celular.'
             />
             {touched.phone && errors.phone ? (
-              <Text>
+              <Text
+                style={styles.errorMessage}
+              >
                 {errors.phone}
               </Text>
 
             ) : null}
             <TextInput
               style={styles.formInput}
-              left={<TextInput.Icon icon='eye' color={theme.colors.primary} />}
+              left={<TextInput.Icon onPress={toggleShowPassword} icon='eye' color={theme.colors.primary} />}
               mode='flat'
-              secureTextEntry
+              secureTextEntry={!showPassword}
               onChangeText={handleChange('password')}
               onFocus={() => setFieldTouched('password')}
               label='Senha'
               placeholder='Digite sua senha.'
             />
             {touched.password && errors.password ? (
-              <Text>
+              <Text
+                style={styles.errorMessage}
+              >
                 {errors.password}
               </Text>
 
             ) : null}
             <TextInput
               style={styles.formInput}
-              left={<TextInput.Icon icon='eye' color={theme.colors.primary} />}
+              left={<TextInput.Icon onPress={toggleShowConfirmPassword} icon='eye' color={theme.colors.primary} />}
               mode='flat'
-              secureTextEntry
+              secureTextEntry={!showConfirmPassword}
               onChangeText={handleChange('confirmPassword')}
               onFocus={() => setFieldTouched('confirmPassword')}
               label='Confirme a senha'
               placeholder='Confirme a senha.'
             />
             {touched.confirmPassword && errors.confirmPassword ? (
-              <Text>
+              <Text
+                style={styles.errorMessage}
+              >
                 {errors.confirmPassword}
               </Text>
 

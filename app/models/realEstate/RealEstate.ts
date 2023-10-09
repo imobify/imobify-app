@@ -17,8 +17,8 @@ export const RealEstateSchema = yup.object({
     yup.object({
       photoUrl: yup.string().url().required(),
       photoPublicId: yup.string().required()
-    }).nullable()
-  ),
+    }).required()
+  ).required(),
   owner: yup.object({
     name: yup.string().required(),
     avatar_url: yup.string().url().required()

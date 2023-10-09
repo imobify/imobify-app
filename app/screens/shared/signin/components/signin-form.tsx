@@ -1,24 +1,34 @@
+import { useState } from 'react'
 import { View } from 'react-native'
 import { TextInput, Button, Text } from 'react-native-paper'
 import { Formik } from 'formik'
 
-import { signinFormSchema } from '../schemas/signin-form'
+import { SigninFormType, signinFormSchema } from '../schemas/signin-form'
 import { useAuthActions } from '@stores/authStore'
 
 import { theme } from '@theme'
 import { styles } from '../styles'
 
 const SigninForm = () => {
+  const [showPassword, setShowPassword] = useState(false)
   const { login } = useAuthActions()
+
+  const handleLogin = (values: SigninFormType) => {
+    login(values)
+  }
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword)
+  }
 
   return (
     <View>
       <Formik
         initialValues={{ email: '', password: '' }}
-        onSubmit={(values) => login(values)}
+        onSubmit={handleLogin}
         validationSchema={signinFormSchema}
       >
-        {({ handleSubmit, handleChange, isSubmitting, errors, setFieldTouched, touched }) => (
+        {({ handleSubmit, handleChange, errors, setFieldTouched, touched }) => (
           <>
             <TextInput
               left={<TextInput.Icon icon='email' color={theme.colors.primary} />}
@@ -37,9 +47,9 @@ const SigninForm = () => {
             ) : null}
             <TextInput
               style={styles.formInput}
-              left={<TextInput.Icon icon='eye' color={theme.colors.primary} />}
+              left={<TextInput.Icon onPress={toggleShowPassword} icon='eye' color={theme.colors.primary} />}
               mode='flat'
-              secureTextEntry
+              secureTextEntry={!showPassword}
               onChangeText={handleChange('password')}
               onFocus={() => setFieldTouched('password')}
               label='Senha'
@@ -55,7 +65,6 @@ const SigninForm = () => {
               style={styles.formInput}
               mode='contained'
               onPress={() => handleSubmit()}
-              disabled={isSubmitting}
               buttonColor={theme.colors.primary}
             >
               <Text variant='titleMedium' style={{ color: theme.colors.surface }}>Entrar</Text>

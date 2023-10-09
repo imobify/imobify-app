@@ -10,12 +10,15 @@ import Loading from '@components/loading'
 import { useNearbyRealEstates } from '@hooks/queries/useNearbyRealEstates'
 import { Text } from 'react-native-paper'
 import { theme } from '@theme'
+import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
 
 type Props = NativeStackScreenProps<HomeStackParamsList, 'map'>
 
 const Home: React.FC<Props> = ({ navigation }: Props) => {
   const { location } = useLocation()
-  const { data, isLoading, isError } = useNearbyRealEstates(location?.coords)
+  const { data, isLoading, isError, refetch } = useNearbyRealEstates(location)
+
+  useRefreshOnFocus(refetch)
 
   if (!location || isLoading || !data) {
     return (
@@ -49,7 +52,7 @@ const Home: React.FC<Props> = ({ navigation }: Props) => {
             longitude: location.coords.longitude
           }}
         >
-          <MaterialCommunityIcons name='account-circle' color='#27a8e8' size={36} />
+          <MaterialCommunityIcons name='map-marker' color='#27a8e8' size={36} />
         </Marker>
         {data.map((realEstate) => (
           <Marker 
@@ -60,7 +63,7 @@ const Home: React.FC<Props> = ({ navigation }: Props) => {
             }}
             onPress={() => navigation.navigate('realEstate', { id: realEstate.id })}
           >
-            <MaterialCommunityIcons name='map-marker-radius' color={theme.colors.tertiary} size={48} />
+            <MaterialCommunityIcons name='home' color={theme.colors.tertiary} size={48} />
           </Marker>
         ))}
       </MapView>

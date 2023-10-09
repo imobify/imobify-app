@@ -5,7 +5,7 @@ import * as SplashScreen from 'expo-splash-screen'
 import * as Font from 'expo-font'
 import { useEffect, useState } from 'react'
 import { getItem } from '../utils/asyncStorage'
-import { useUser } from '../stores/authStore'
+import { useUser } from '@stores/authStore'
 
 SplashScreen.preventAutoHideAsync()
 

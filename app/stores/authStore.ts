@@ -1,10 +1,8 @@
 import { create } from 'zustand'
 import jwtDecode from 'jwt-decode'
 import { removeItem, setItem } from '../utils/asyncStorage'
-import { AuthResponse, Signin, signinSchema, Signup, signupSchema } from '@models/auth'
-import axios from 'axios'
-
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL
+import { Signin, Signup } from '@models/auth'
+import { signin, signup } from '@services/auth'
 
 type AuthState = {
   token: string | null
@@ -37,45 +35,26 @@ export const useAuthStore = create<AuthState>()((set) => ({
   userType: undefined,
   authActions: {
     login: async (dto: Signin) => {
-      try {
-        const post = await signinSchema.validate(dto)
-        const { data } = await axios.post<AuthResponse>(`${BASE_URL}/auth/signin`, post)
-  
-        if (!data) { 
-          return 
-        }
+      const data = await signin(dto)
         
-        const { sub, type_id } = jwtDecode<JwtData>(data.access_token)
+      const { sub, type_id } = jwtDecode<JwtData>(data.access_token)
   
-        await setItem('imobify-auth-token', JSON.stringify(data.access_token))
+      await setItem('imobify-auth-token', JSON.stringify(data.access_token))
   
-        set({ token: data.access_token, userType: type_id, userId: sub })
-      } catch (error) {
-        console.error('LOGIN', error)
-        throw error
-      }
+      set({ token: data.access_token, userType: type_id, userId: sub })
     },
     register: async (dto: Signup) => {
-      try {
-        const post = await signupSchema.validate(dto)
-        const { data } = await axios.post<AuthResponse>(`${BASE_URL}/auth/signup`, post)
-  
-        if (!data) { 
-          return 
-        }
-        
-        const { sub, type_id } = jwtDecode<JwtData>(data.access_token)
-  
-        await setItem('imobify-auth-token', JSON.stringify(data.access_token))
-  
-        set({ token: data.access_token, userType: type_id, userId: sub })
-      } catch (error) {
-        console.error('REGISTER', error)
-        throw error
-      }
+      const data = await signup(dto)
+      
+      const { sub, type_id } = jwtDecode<JwtData>(data.access_token)
+
+      await setItem('imobify-auth-token', JSON.stringify(data.access_token))
+
+      set({ token: data.access_token, userType: type_id, userId: sub })
     },
     signOut: async () => {
       await removeItem('imobify-auth-token')
+
       set({ token: null, userType: undefined, userId: undefined })
     }
   },

@@ -2,11 +2,11 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import Profile from '@screens/shared/profile'
 import Leads from '@screens/shared/leads'
 import Favorites from '@screens/seeker/favorites'
 import HomeNavigator from './home.routes'
 import { theme } from '@theme'
+import ProfileNavigator from './profile.routes'
 
 export type SeekerTabsParamsList = {
   home: undefined,
@@ -59,7 +59,7 @@ const SeekerNavigator: React.FC = () => (
     />
     <Tab.Screen
       name="profile"
-      component={Profile}
+      component={ProfileNavigator}
       options={{
         tabBarLabel: 'Meu Perfil',
         tabBarIcon: ({ color }) => (
