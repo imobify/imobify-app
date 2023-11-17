@@ -14,6 +14,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 import { styles } from '../styles'
 import { addEditFormSchema } from '../schemas/add-edit-form'
+import { createRealEstate } from '@services/real-estate'
+import { addFormSchema } from '../schemas/add-form'
+import { useMutation } from '@tanstack/react-query'
 
 type NavigationType = NativeStackNavigationProp<RealEstateTabNavigatorParams, 'realEstateForm'>
 
@@ -47,18 +50,27 @@ type Props = {
 
 const AddEditForm: React.FC<Props> = ({ id, data }: Props) => {
   const navigation = useNavigation<NavigationType>()
-  const [initialValues, setInitialValues] = useState<RealEstateForm>({ ...data, deletedPhotos: [] })
+  const [initialValues, setInitialValues] = useState<RealEstateForm>({ ...data })
   const [isRent, setIsRent] = useState(!!data.renting_value)
   const [isSale, setIsSale] = useState(!!data.selling_value)
   const [hasTax, setHasTax] = useState(!!data.tax_value)
 
+  const createMutation = useMutation({
+    mutationFn: createRealEstate,
+    onSuccess: (data) => {
+      navigation.dispatch(
+        StackActions.replace('realEstate', { id: data.id })
+      )
+    }
+  })
+
   const handleFormSubmit = async (data: RealEstateForm) => {
-    console.log('id do imovel: ', id)
-    const parsedData = await addEditFormSchema.validate(data)
-    console.log('editing with data: ', parsedData)
-    navigation.dispatch(
-      StackActions.popToTop()
-    )
+    if (!id) {
+      const validatedData = await addFormSchema.validate(data)
+      createMutation.mutate(validatedData)
+    } else {
+      console.log('TODO: editMutation', data)
+    }
   }
 
   return (
@@ -369,6 +381,7 @@ const AddEditForm: React.FC<Props> = ({ id, data }: Props) => {
                 mode='contained'
                 icon='check'
                 style={styles.primaryBtn}
+                disabled={createMutation.isLoading}
               >
                 <Text variant='titleMedium' style={styles.primaryBtnText}>Salvar</Text>
               </Button>
