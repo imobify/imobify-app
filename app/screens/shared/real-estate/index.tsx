@@ -1,17 +1,21 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { HomeStackParamsList } from '@routes/home.routes'
 import { ScrollView, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { styles } from './styles'
-import { useRealEstateDetails } from '@hooks/queries/useRealEstateDetails'
-import Loading from '@components/loading'
 import { Avatar, Button, Divider, Text } from 'react-native-paper'
+
+import Loading from '@components/loading'
 import { useUser } from '@stores/authStore'
 import Carousel from '@components/carousel'
-import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
 import CustomTitle from '@components/custom-title'
+import { HomeTabNavigatorParams } from '@routes/types'
+import { StackActions } from '@react-navigation/native'
+import { parseRealEstate } from '@utils/parseRealEstate'
+import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useRealEstateDetails } from '@hooks/queries/useRealEstateDetails'
 
-type Props = NativeStackScreenProps<HomeStackParamsList, 'realEstate'>
+import { styles } from './styles'
+
+type Props = NativeStackScreenProps<HomeTabNavigatorParams, 'realEstate'>
 
 const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
   const { id } = route.params
@@ -186,7 +190,7 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
             >
               <Button
                 mode='contained'
-                onPress={() => navigation.getParent()?.navigate('realEstateRoutes', { screen: 'edit' })}
+                onPress={() => navigation.dispatch(StackActions.push('realEstateForm', { id: data.id, data: parseRealEstate(data) }))}
                 icon='pencil'
                 style={styles.primaryBtn}
               >

@@ -1,17 +1,19 @@
+import { theme } from '@theme'
 import { View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { styles } from './styles'
-import { useCurrentUser } from '@hooks/queries/useCurrentUser'
-import Loading from '@components/loading'
 import { Avatar, Button, Divider, IconButton, Surface, Text } from 'react-native-paper'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { theme } from '@theme'
+
+import Loading from '@components/loading'
 import CustomTitle from '@components/custom-title'
 import { useAuthActions } from '@stores/authStore'
+import { ProfileTabNavigatorParams } from '@routes/types'
+import { useCurrentUser } from '@hooks/queries/useCurrentUser'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { ProfileStackParamList } from '@routes/profile.routes'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-type Props = NativeStackScreenProps<ProfileStackParamList, 'userProfile'>
+import { styles } from './styles'
+
+type Props = NativeStackScreenProps<ProfileTabNavigatorParams, 'myProfile'>
 
 const Profile: React.FC<Props> = ({ navigation }: Props) => {
   const { signOut } = useAuthActions()

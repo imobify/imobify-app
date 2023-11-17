@@ -1,15 +1,15 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import ListItem from '@components/list-item'
-import Loading from '@components/loading'
-import { usePaginatedRealEstates } from '@hooks/queries/usePaginatedRealEstates'
-import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
-import { FlashList } from '@shopify/flash-list'
 import { Divider } from 'react-native-paper'
-// import { FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { RealEstateStackParamList } from '@routes/announcer.routes'
 
-type Props = NativeStackScreenProps<RealEstateStackParamList, 'list'>
+import Loading from '@components/loading'
+import ListItem from '@components/list-item'
+import { FlashList } from '@shopify/flash-list'
+import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
+import { RealEstateTabNavigatorParams } from '@routes/types'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { usePaginatedRealEstates } from '@hooks/queries/usePaginatedRealEstates'
+
+type Props = NativeStackScreenProps<RealEstateTabNavigatorParams, 'list'>
 
 const RealEstateList: React.FC<Props> = ({ navigation }: Props) => {
   const { data, isLoading, isError, fetchNextPage, refetch } = usePaginatedRealEstates(10)
@@ -41,9 +41,7 @@ const RealEstateList: React.FC<Props> = ({ navigation }: Props) => {
         data={flattenedData}
         renderItem={({ item }) => (
           <ListItem.Root
-            onPress={() => navigation.getParent()?.navigate('home', { screen: 'realEstate', params: {
-              id: item.id
-            } })}
+            onPress={() => navigation.navigate('realEstate', { id: item.id })}
           >
             {item.photos[0]?.photoUrl && (<ListItem.Left
               imageSource={{

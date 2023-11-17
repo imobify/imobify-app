@@ -1,13 +1,16 @@
 import { useState } from 'react'
+
+import { theme } from '@theme'
+import { Formik } from 'formik'
 import { ScrollView } from 'react-native'
+import { Button, Text, TextInput } from 'react-native-paper'
+
+import { AuthStackParamList } from '@routes/types'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { Formik } from 'formik'
-import { Button, Text, TextInput } from 'react-native-paper'
-import { AuthStackParamList } from '@routes/auth.routes'
-import { SignupFormType, signupFormSchema } from '../schemas/signup-form'
-import { theme } from '@theme'
+
 import { styles } from '../styles'
+import { signupFormSchema, SignupFormType } from '../schemas/signup-form'
 
 type NavigationType = NativeStackNavigationProp<AuthStackParamList, 'signup'>
 

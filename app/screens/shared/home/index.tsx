@@ -1,20 +1,24 @@
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { theme } from '@theme'
+import { FAB, Text } from 'react-native-paper'
 import MapView, { Marker } from 'react-native-maps'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+import Loading from '@components/loading'
+import { useUser } from '@stores/authStore'
+import useLocation from '@hooks/useLocation'
+import { HomeTabNavigatorParams } from '@routes/types'
+import { StackActions } from '@react-navigation/native'
+import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useNearbyRealEstates } from '@hooks/queries/useNearbyRealEstates'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { HomeStackParamsList } from '@routes/home.routes'
-import useLocation from '@hooks/useLocation'
 import { customMapStyle, styles } from './styles'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import Loading from '@components/loading'
-import { useNearbyRealEstates } from '@hooks/queries/useNearbyRealEstates'
-import { Text } from 'react-native-paper'
-import { theme } from '@theme'
-import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
 
-type Props = NativeStackScreenProps<HomeStackParamsList, 'map'>
+type Props = NativeStackScreenProps<HomeTabNavigatorParams, 'home'>
 
 const Home: React.FC<Props> = ({ navigation }: Props) => {
+  const { userType } = useUser()
   const { location } = useLocation()
   const { data, isLoading, isError, refetch } = useNearbyRealEstates(location)
 
@@ -67,6 +71,31 @@ const Home: React.FC<Props> = ({ navigation }: Props) => {
           </Marker>
         ))}
       </MapView>
+      {userType === 2 ? (
+        <FAB 
+          icon='plus'
+          style={styles.fab}
+          // onPress={() => navigation.getParent()?.navigate('realEstateRoutes', { screen: 'form', params: {
+          //   data: undefined
+          // } })}
+          onPress={() => navigation.dispatch(StackActions.push('realEstateForm', { id: undefined, data: {
+            title: '',
+            description: '',
+            cep: '',
+            street: '',
+            number: '',
+            neighborhood: '',
+            city: '',
+            uf: '',
+            area: undefined,
+            renting_value: undefined,
+            selling_value: undefined,
+            tax_value: undefined,
+            photos: [],
+          } }))}
+          color={theme.colors.surface}
+        />
+      ) : null}
     </SafeAreaView>
   )
 }

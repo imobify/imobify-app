@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { theme } from '@theme'
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
@@ -9,6 +10,13 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%'
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: theme.colors.primary
   }
 })
 

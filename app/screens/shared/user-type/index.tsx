@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { ImageBackground, View } from 'react-native'
-import { useRoute, type RouteProp } from '@react-navigation/native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Text } from 'react-native-paper'
+import { ImageBackground, View } from 'react-native'
 
 import CustomTitle from '@components/custom-title'
-import PickTypeCard from '@components/pick-type-card'
-import { AuthStackParamList } from '@routes/auth.routes'
 import { useAuthActions } from '@stores/authStore'
-
+import { AuthStackParamList } from '@routes/types'
+import PickTypeCard from '@components/pick-type-card'
+import { type RouteProp, useRoute } from '@react-navigation/native'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
 import { styles } from './styles'
 
