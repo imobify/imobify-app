@@ -196,14 +196,25 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
               >
                 <Text variant='titleMedium' style={styles.primaryBtnText}>Editar</Text>
               </Button>
-              <Button
-                mode='text'
-                uppercase
-              >
-                <Text variant='titleMedium' style={styles.dangerBtn}>
+              {data.isActive ? (
+                <Button
+                  mode='text'
+                  uppercase
+                >
+                  <Text variant='titleMedium' style={styles.dangerBtn}>
                   Desativar
-                </Text>
-              </Button>
+                  </Text>
+                </Button>
+              ) : (
+                <Button
+                  mode='text'
+                  uppercase
+                >
+                  <Text variant='titleMedium' style={styles.dangerBtn}>
+                  Ativar
+                  </Text>
+                </Button>
+              )}
             </View>
           ) : (
             <View
