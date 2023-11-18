@@ -11,6 +11,7 @@ export const addFormSchema = yup.object({
   neighborhood: yup.string().required('É obrigatório informar o bairro do imóvel!'),
   city: yup.string().required('É obrigatório informar a cidade do imóvel!'),
   uf: yup.string().oneOf(states, 'Estado inválido. Digite a sigla de 2 caracteres do estado.').required('É obrigatório informar o estado do imóvel!'),
+  isActive: yup.boolean().required('É obrigatório informar se o imóvel está ativo para anúncio ou não!'),
   area: yup.string().required('É obrigatório informar a área do imóvel, em m².'),
   renting_value: yup.string().optional(),
   selling_value: yup.string().optional(),

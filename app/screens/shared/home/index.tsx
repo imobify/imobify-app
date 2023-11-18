@@ -91,6 +91,7 @@ const Home: React.FC<Props> = ({ navigation }: Props) => {
             renting_value: undefined,
             selling_value: undefined,
             tax_value: undefined,
+            isActive: false,
             photos: [],
           } }))}
           color={theme.colors.surface}

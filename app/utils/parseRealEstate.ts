@@ -10,7 +10,8 @@ export type ParsedRealEstate = {
   neighborhood: string
   city: string
   uf: string
-  area: number
+  area: number,
+  isActive: boolean,
   renting_value: number | undefined
   selling_value: number | undefined
   tax_value: number | undefined
@@ -41,6 +42,7 @@ export const parseRealEstate = (realEstate: RealEstate): ParsedRealEstate => {
     title: realEstate.title,
     description: realEstate.description,
     area: realEstate.area,
+    isActive: realEstate.isActive,
     renting_value: realEstate.renting_value ?? undefined,
     selling_value: realEstate.selling_value ?? undefined,
     tax_value: realEstate.tax_value ?? undefined,

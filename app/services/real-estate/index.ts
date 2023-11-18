@@ -8,6 +8,7 @@ import { PaginatedRealEstate } from '@models/realEstate/PaginatedRealEstate'
 
 import api from '../client'
 import { AddForm } from '@screens/announcer/real-estate-form/schemas/add-form'
+import { AddEditForm } from '@screens/announcer/real-estate-form/schemas/add-edit-form'
 
 const googleGeocodingApiKey = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? ''
 
@@ -62,13 +63,14 @@ export const getPaginatedRealEstates = async (take: number, cursor: number | und
   }
 }
 
-export const createRealEstate = async (data: AddForm) => {
+export const createRealEstate = async (data: AddForm): Promise<RealEstate | undefined> => {
   try {
     const { 
       title, 
       description, 
       area = 0, 
-      cep, city, 
+      cep, 
+      city, 
       street, 
       neighborhood, 
       uf, 
@@ -76,7 +78,8 @@ export const createRealEstate = async (data: AddForm) => {
       tax_value, 
       renting_value, 
       number, 
-      photos 
+      photos,
+      isActive
     } = data
   
     const address = makeAddress({ cep, city, neighborhood, number, street, uf })
@@ -104,7 +107,7 @@ export const createRealEstate = async (data: AddForm) => {
       latitude: lat.toString(),
       longitude: lng.toString(),
       address,
-      isActive: 'true',
+      isActive: JSON.stringify(isActive),
       'images[]': images
     }
 
@@ -118,6 +121,72 @@ export const createRealEstate = async (data: AddForm) => {
   } catch (error) {
     console.error(error)
     useToastStore.getState().show('Não foi possível cadastrar o imóvel.')
-    throw error
+  }
+}
+
+export const editRealEstate = async (data: AddEditForm & { id: number }): Promise<RealEstate | undefined> => {
+  try {
+    const {
+      id,
+      title, 
+      description, 
+      area = 0, 
+      cep, 
+      city, 
+      street, 
+      neighborhood, 
+      uf, 
+      selling_value, 
+      tax_value, 
+      renting_value, 
+      number, 
+      photos,
+      deletedPhotos,
+      isActive
+    } = data
+
+    // no need to upload already uploaded photos
+    const newPhotos = photos?.filter(photo => photo.isNew) || []
+
+    const address = makeAddress({ cep, city, neighborhood, number: number.toString(), street, uf })
+
+    const geocodingResponse = await Geocoder.from(address)
+  
+    const { lat, lng } = geocodingResponse.results[0].geometry.location
+  
+    if (!lat && !lng) {
+      throw new Error('Latitude e longitude não encontrados para esse endereço.')
+    }
+    
+    const images = newPhotos.map(photo => {
+      return {
+        uri: photo.uri,
+        name: photo.id,
+        type: 'image/jpeg'
+      }
+    })
+
+    const form = {
+      title,
+      description,
+      area: area.toString(),
+      latitude: lat.toString(),
+      longitude: lng.toString(),
+      address,
+      isActive: JSON.stringify(isActive),
+      'images[]': images,
+      deletedPhotos
+    }
+
+    if (selling_value) form.selling_value = selling_value.toString()
+    if (renting_value) form.renting_value = renting_value.toString()
+    if (tax_value) form.tax_value = tax_value.toString()
+
+    const response = await api.patchForm<RealEstate>(`real-estate/${id}`, form)
+
+    return response.data
+  } catch (error) {
+    console.error(error)
+    useToastStore.getState().show('Não foi possível editar o imóvel.')
   }
 }

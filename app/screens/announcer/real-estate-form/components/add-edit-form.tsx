@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Formik } from 'formik'
 import { View } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
-import { Button, Checkbox, Text, TextInput } from 'react-native-paper'
+import { Button, Checkbox, Text, TextInput, Switch } from 'react-native-paper'
 
 import CardGrid from '@components/card-grid'
 import CustomTitle from '@components/custom-title'
@@ -14,9 +14,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 import { styles } from '../styles'
 import { addEditFormSchema } from '../schemas/add-edit-form'
-import { createRealEstate } from '@services/real-estate'
+import { createRealEstate, editRealEstate } from '@services/real-estate'
 import { addFormSchema } from '../schemas/add-form'
-import { useMutation } from '@tanstack/react-query'
+import { QueryClient, useMutation } from '@tanstack/react-query'
 
 type NavigationType = NativeStackNavigationProp<RealEstateTabNavigatorParams, 'realEstateForm'>
 
@@ -35,7 +35,8 @@ type RealEstateForm = {
   neighborhood: string
   city: string
   uf: string
-  area: number | undefined
+  area: number | undefined,
+  isActive: boolean,
   renting_value: number | undefined
   selling_value: number | undefined
   tax_value: number | undefined
@@ -55,21 +56,37 @@ const AddEditForm: React.FC<Props> = ({ id, data }: Props) => {
   const [isSale, setIsSale] = useState(!!data.selling_value)
   const [hasTax, setHasTax] = useState(!!data.tax_value)
 
+  const queryClient = new QueryClient()
+
   const createMutation = useMutation({
     mutationFn: createRealEstate,
     onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ['get-paginated-real-estates', 'real-estate-detail']
+      })
+      navigation.navigate('realEstate', { id: data!.id })
+    }
+  })
+
+  const editMutation = useMutation({
+    mutationFn: editRealEstate,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['get-paginated-real-estates', 'real-estate-detail']
+      })
       navigation.dispatch(
-        StackActions.replace('realEstate', { id: data.id })
+        StackActions.popToTop()
       )
     }
   })
 
   const handleFormSubmit = async (data: RealEstateForm) => {
-    if (!id) {
-      const validatedData = await addFormSchema.validate(data)
-      createMutation.mutate(validatedData)
+    if (id !== undefined) {
+      const validatedData = await addEditFormSchema.validate(data)
+      editMutation.mutateAsync({ ...validatedData, id })
     } else {
-      console.log('TODO: editMutation', data)
+      const validatedData = await addFormSchema.validate(data)
+      createMutation.mutateAsync(validatedData)
     }
   }
 
@@ -79,11 +96,12 @@ const AddEditForm: React.FC<Props> = ({ id, data }: Props) => {
         initialValues={{
           ...initialValues
         }}
-        validationSchema={addEditFormSchema}
+        validationSchema={id ? addEditFormSchema : addFormSchema}
         onSubmit={handleFormSubmit}
       >
         {({ handleSubmit, handleChange, setFieldTouched, values, errors, touched, setFieldValue }) => {
           const onPressDeletePhoto = (id: string, isNew: boolean) => {
+            console.log(isNew)
             const filteredPhotos = initialValues.photos.filter(photo => !(photo.id === id))
 
             // only add to deletedPhotos pictures with existing IDs
@@ -101,6 +119,7 @@ const AddEditForm: React.FC<Props> = ({ id, data }: Props) => {
               }
               setFieldValue('photos', filteredPhotos, true)
               setFieldValue('deletedPhotos', newState.deletedPhotos)
+              setInitialValues(newState)
             }
           }
 
@@ -373,6 +392,28 @@ const AddEditForm: React.FC<Props> = ({ id, data }: Props) => {
                 <Text
                 >
                   {errors.uf}
+                </Text>
+
+              ) : null}
+              <View style={{...styles.formInput, ...styles.checkBoxContainer, justifyContent: 'flex-start'}}>
+                <CustomTitle style={{ fontSize: 18 }}>Imóvel ativo?</CustomTitle>
+                <Switch 
+                  value={initialValues.isActive}
+                  onValueChange={() => {
+                    setFieldValue('isActive', !initialValues.isActive, true)
+                    setInitialValues(state => {
+                      return {
+                        ...state,
+                        isActive: !state.isActive
+                      }
+                    })
+                  }}
+                />
+              </View>
+              {touched.isActive && errors.isActive ? (
+                <Text
+                >
+                  {errors.isActive}
                 </Text>
 
               ) : null}
