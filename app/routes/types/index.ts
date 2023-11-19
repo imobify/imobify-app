@@ -17,6 +17,9 @@ export type CommonNavigatorParams = {
     document: string | undefined
     email: string | undefined
     phone: string | undefined
+  },
+  editAvatar: {
+    avatar: string
   }
 }
 

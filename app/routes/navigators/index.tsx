@@ -3,6 +3,7 @@ import Leads from '@screens/shared/leads'
 import Profile from '@screens/shared/profile'
 import Favorites from '@screens/seeker/favorites'
 import RealEstate from '@screens/shared/real-estate'
+import EditAvatar from '@screens/shared/edit-avatar'
 import EditProfile from '@screens/shared/edit-profile'
 import RealEstateForm from '@screens/announcer/real-estate-form'
 import RealEstateList from '@screens/announcer/real-estate-list'
@@ -27,6 +28,10 @@ const commonScreens = (Stack: typeof CommonScreens) => {
       <Stack.Screen 
         name='editProfile'
         getComponent={() => EditProfile}
+      />
+      <Stack.Screen 
+        name='editAvatar'
+        getComponent={() => EditAvatar}
       />
     </>
   )

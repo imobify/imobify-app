@@ -1,5 +1,6 @@
 import { theme } from '@theme'
 import { View } from 'react-native'
+import * as ImagePicker from 'expo-image-picker'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Avatar, Button, Divider, IconButton, Surface, Text } from 'react-native-paper'
 
@@ -12,12 +13,15 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { styles } from './styles'
+import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
 
 type Props = NativeStackScreenProps<ProfileTabNavigatorParams, 'myProfile'>
 
 const Profile: React.FC<Props> = ({ navigation }: Props) => {
   const { signOut } = useAuthActions()
-  const { data, isLoading, isError } = useCurrentUser()
+  const { data, isLoading, isError, refetch } = useCurrentUser()
+
+  useRefreshOnFocus(refetch)
 
   if (isLoading) {
     return (
@@ -33,6 +37,27 @@ const Profile: React.FC<Props> = ({ navigation }: Props) => {
         </Text>
       </SafeAreaView>
     )
+  }
+
+  const handleEditAvatar = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+    if (status !== 'granted') {
+      alert('É necessário conceder permissão de acesso à galeria!')
+      return
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      selectionLimit: 1,
+      quality: 1,
+      allowsEditing: true
+    })
+
+    if (!result.canceled) {
+      navigation.navigate('editAvatar', { avatar: result.assets[0].uri })
+    }
   }
 
   return (
@@ -61,6 +86,7 @@ const Profile: React.FC<Props> = ({ navigation }: Props) => {
             iconColor='white'
             size={28}
             style={styles.editAvatarBtn}
+            onPress={handleEditAvatar}
           />
         ) : (
           <IconButton 
@@ -70,6 +96,7 @@ const Profile: React.FC<Props> = ({ navigation }: Props) => {
             iconColor='white'
             size={28}
             style={styles.editAvatarBtn}
+            onPress={handleEditAvatar}
           />
         )}
       </View>

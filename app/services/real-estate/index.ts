@@ -175,7 +175,7 @@ export const editRealEstate = async (data: AddEditForm & { id: number }): Promis
       address,
       isActive: JSON.stringify(isActive),
       'images[]': images,
-      deletedPhotos
+      deletedPhotos,
     }
 
     if (selling_value) form.selling_value = selling_value.toString()
