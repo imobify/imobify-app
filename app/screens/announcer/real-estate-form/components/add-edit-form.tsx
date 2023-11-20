@@ -101,7 +101,6 @@ const AddEditForm: React.FC<Props> = ({ id, data }: Props) => {
       >
         {({ handleSubmit, handleChange, setFieldTouched, values, errors, touched, setFieldValue }) => {
           const onPressDeletePhoto = (id: string, isNew: boolean) => {
-            console.log(isNew)
             const filteredPhotos = initialValues.photos.filter(photo => !(photo.id === id))
 
             // only add to deletedPhotos pictures with existing IDs
