@@ -6,16 +6,18 @@ import Loading from '@components/loading'
 import { useUser } from '@stores/authStore'
 import Carousel from '@components/carousel'
 import CustomTitle from '@components/custom-title'
+import { toggleLeadStatus } from '@services/leads'
+import { useMutation } from '@tanstack/react-query'
 import { HomeTabNavigatorParams } from '@routes/types'
 import { StackActions } from '@react-navigation/native'
 import { parseRealEstate } from '@utils/parseRealEstate'
 import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
+import { editStatusRealEstate } from '@services/real-estate'
+import { useDeleteLeadMutation } from '@hooks/mutations/deleteLead'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useRealEstateDetails } from '@hooks/queries/useRealEstateDetails'
 
 import { styles } from './styles'
-import { useMutation } from '@tanstack/react-query'
-import { editStatusRealEstate } from '@services/real-estate'
 
 type Props = NativeStackScreenProps<HomeTabNavigatorParams, 'realEstate'>
 
@@ -24,6 +26,7 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
   const { userId } = useUser()
 
   const { data, isLoading, isError, refetch } = useRealEstateDetails(id)
+
   useRefreshOnFocus(refetch)
 
   const editStatusMutation = useMutation({
@@ -32,6 +35,15 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
       refetch()
     }
   })
+
+  const createLeadMutation = useMutation({
+    mutationFn: toggleLeadStatus,
+    onSuccess: () => {
+      refetch()
+    }
+  })
+  
+  const deleteLeadMutation = useDeleteLeadMutation(refetch)
 
   if (isLoading) {
     return (
@@ -46,6 +58,8 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
       </SafeAreaView>
     )
   }
+
+  const matchingLead = data.leads.find(lead => lead.author_id === userId)
 
   const handleToggleStatus = (status: boolean) => {
     if (status) {
@@ -75,6 +89,36 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
     ])
 
     return
+  }
+
+  const handleToggleLead = (status: boolean) => {
+    if (status) {
+      Alert.alert('Enviar interesse', 'Enviando seu interesse no imóvel, o anunciante terá acesso às suas informações de contato no app (email, telefone), podendo entrar em contato para uma negociação.', [
+        {
+          text: 'Cancelar',
+          style: 'cancel'
+        },
+        {
+          text: 'OK',
+          onPress: () => createLeadMutation.mutate({ realEstateId: data.id })
+        },
+      ])
+  
+      return
+    } else {
+      Alert.alert('Remover interesse', 'Ao remover seu interesse no imóvel, o anunciante deixará de ter acesso às suas informações de contato no app.', [
+        {
+          text: 'Cancelar',
+          style: 'cancel'
+        },
+        {
+          text: 'OK',
+          onPress: () => deleteLeadMutation.mutate({ leadId: matchingLead!.id })
+        },
+      ])
+  
+      return
+    }
   }
 
   return (
@@ -257,17 +301,30 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
                 </Button>
               )}
             </View>
+          ) : !matchingLead ? (
+            <View
+              style={styles.buttons}
+            >
+              <Button
+                mode='contained'
+                onPress={() => handleToggleLead(true)}
+                style={styles.primaryBtn}
+                icon='thumb-up'
+              >
+                <Text variant='titleMedium' style={styles.primaryBtnText}>Tenho interesse</Text>
+              </Button>
+            </View>
           ) : (
             <View
               style={styles.buttons}
             >
               <Button
                 mode='contained'
-                onPress={() => console.log('hii')}
+                onPress={() => handleToggleLead(false)}
                 style={styles.primaryBtn}
-                icon='thumb-up'
+                icon='thumb-down'
               >
-                <Text variant='titleMedium' style={styles.primaryBtnText}>Tenho interesse</Text>
+                <Text variant='titleMedium' style={styles.primaryBtnText}>Remover interesse</Text>
               </Button>
             </View>
           )}

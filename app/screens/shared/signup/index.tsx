@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { styles } from './styles'
-import SignupForm from './components/signup-form'
 import { ImageBackground, View } from 'react-native'
+
 import CustomTitle from '@components/custom-title'
+import { AuthStackParamList } from '@routes/types'
 import RedirectLink from '@components/redirect-link'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { AuthStackParamList } from '@routes/auth.routes'
+
+import { styles } from './styles'
+import SignupForm from './components/signup-form'
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'signup'>
 

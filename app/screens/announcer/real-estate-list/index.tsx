@@ -50,7 +50,7 @@ const RealEstateList: React.FC<Props> = ({ navigation }: Props) => {
             />)}
             <ListItem.Content
               title={item.title}
-              subtitle={`${item._count.leads} interesse(s)`}
+              subtitles={[`${item._count.leads} interesse(s)`]}
             />
             <ListItem.Right
               icon={item.isActive ? 'check' : 'close'}

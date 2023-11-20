@@ -1,11 +1,12 @@
 import { theme } from '@theme'
-import { StyleSheet, Text } from 'react-native'
-import { TouchableOpacityProps } from 'react-native'
-import { TouchableOpacity } from 'react-native'
 import { View } from 'react-native'
-import { Avatar, IconButton, Tooltip } from 'react-native-paper'
-import { AvatarImageSource } from 'react-native-paper/lib/typescript/components/Avatar/AvatarImage'
+import { StyleSheet, Text } from 'react-native'
+import { TouchableOpacity } from 'react-native'
+import { TouchableOpacityProps } from 'react-native'
+import { Avatar, IconButton, IconButtonProps, Tooltip } from 'react-native-paper'
+
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon'
+import { AvatarImageSource } from 'react-native-paper/lib/typescript/components/Avatar/AvatarImage'
 
 type ListItemLeftProps = {
   imageSource?: AvatarImageSource
@@ -25,7 +26,7 @@ const ListItemLeft: React.FC<ListItemLeftProps> = ({ imageSource, icon }: ListIt
       <Avatar.Icon 
         icon={icon || 'account'}
         size={64}
-        style={{ backgroundColor: theme.colors.onSurfaceDisabled }}
+        style={{ backgroundColor: theme.colors.onSurfaceDisabled  }}
       />
     )
   }
@@ -35,9 +36,9 @@ type ListItemRightProps = {
   icon: IconSource
   iconContainerColor: string
   tooltipTitle: string
-}
+} & IconButtonProps
 
-const ListItemRight: React.FC<ListItemRightProps> = ({ icon, iconContainerColor, tooltipTitle }: ListItemRightProps) => {
+const ListItemRight: React.FC<ListItemRightProps> = ({ icon, iconContainerColor, tooltipTitle, ...rest }: ListItemRightProps) => {
   return (
     <View
       style={styles.rightIcon}
@@ -52,6 +53,7 @@ const ListItemRight: React.FC<ListItemRightProps> = ({ icon, iconContainerColor,
           containerColor={iconContainerColor}
           iconColor='white'
           size={16}
+          {...rest}
         />
       </Tooltip>
     </View>
@@ -60,10 +62,10 @@ const ListItemRight: React.FC<ListItemRightProps> = ({ icon, iconContainerColor,
 
 type ListItemContentProps = {
   title: string
-  subtitle: string
+  subtitles: string[]
 }
 
-const ListItemContent: React.FC<ListItemContentProps> = ({ title, subtitle }: ListItemContentProps) => {
+const ListItemContent: React.FC<ListItemContentProps> = ({ title, subtitles }: ListItemContentProps) => {
   return (
     <View
       style={styles.content}
@@ -74,10 +76,13 @@ const ListItemContent: React.FC<ListItemContentProps> = ({ title, subtitle }: Li
       >
         {title}
       </Text>
-      <Text
-      >
-        {subtitle}
-      </Text>
+      {subtitles.map(subtitle => (
+        <Text
+          key={subtitle}
+        >
+          {subtitle}
+        </Text>
+      ))}
     </View>
   )
 }

@@ -1,5 +1,5 @@
 import { theme } from '@theme'
-import { View } from 'react-native'
+import { Alert, View } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Avatar, Button, Divider, IconButton, Surface, Text } from 'react-native-paper'
@@ -8,12 +8,12 @@ import Loading from '@components/loading'
 import CustomTitle from '@components/custom-title'
 import { useAuthActions } from '@stores/authStore'
 import { ProfileTabNavigatorParams } from '@routes/types'
+import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
 import { useCurrentUser } from '@hooks/queries/useCurrentUser'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { styles } from './styles'
-import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
 
 type Props = NativeStackScreenProps<ProfileTabNavigatorParams, 'myProfile'>
 
@@ -58,6 +58,21 @@ const Profile: React.FC<Props> = ({ navigation }: Props) => {
     if (!result.canceled) {
       navigation.navigate('editAvatar', { avatar: result.assets[0].uri })
     }
+  }
+
+  const handleLogout = () => {
+    Alert.alert('Logout', 'Deseja mesmo fazer logout?', [
+      {
+        text: 'Cancelar',
+        style: 'cancel'
+      },
+      {
+        text: 'Continuar',
+        onPress: () => signOut()
+      },
+    ])
+
+    return
   }
 
   return (
@@ -159,7 +174,7 @@ const Profile: React.FC<Props> = ({ navigation }: Props) => {
       <Button
         mode='text'
         uppercase
-        onPress={signOut}
+        onPress={handleLogout}
         style={styles.signOutBtn}
       >
         <Text

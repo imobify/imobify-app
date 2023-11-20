@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { Image } from 'expo-image'
 import { View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { Image } from 'expo-image'
 
 import CustomTitle from '@components/custom-title'
+import { AuthStackParamList } from '@routes/types'
 import RedirectLink from '@components/redirect-link'
-import { AuthStackParamList } from '@routes/auth.routes'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
-const townBackground = require('../../../../assets/town-background.png')
 import { styles } from './styles'
 import SigninForm from './components/signin-form'
+const townBackground = require('../../../../assets/town-background.png')
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'signin'>
 
