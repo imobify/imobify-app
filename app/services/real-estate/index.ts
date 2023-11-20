@@ -190,3 +190,13 @@ export const editRealEstate = async (data: AddEditForm & { id: number }): Promis
     useToastStore.getState().show('Não foi possível editar o imóvel.')
   }
 }
+
+export const editStatusRealEstate = async (data: {status: boolean, id: number}): Promise<RealEstate | undefined> => {
+  const form = {
+    isActive: JSON.stringify(data.status)
+  }
+
+  const response = await api.patchForm<RealEstate>(`real-estate/${data.id}`, form)
+
+  return response.data
+}

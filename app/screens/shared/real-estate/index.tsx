@@ -1,4 +1,4 @@
-import { ScrollView, View } from 'react-native'
+import { Alert, ScrollView, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Avatar, Button, Divider, Text } from 'react-native-paper'
 
@@ -14,6 +14,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useRealEstateDetails } from '@hooks/queries/useRealEstateDetails'
 
 import { styles } from './styles'
+import { useMutation } from '@tanstack/react-query'
+import { editStatusRealEstate } from '@services/real-estate'
 
 type Props = NativeStackScreenProps<HomeTabNavigatorParams, 'realEstate'>
 
@@ -23,6 +25,13 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
 
   const { data, isLoading, isError, refetch } = useRealEstateDetails(id)
   useRefreshOnFocus(refetch)
+
+  const editStatusMutation = useMutation({
+    mutationFn: editStatusRealEstate,
+    onSuccess: () => {
+      refetch()
+    }
+  })
 
   if (isLoading) {
     return (
@@ -36,6 +45,36 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
         <Text>ERRO</Text>
       </SafeAreaView>
     )
+  }
+
+  const handleToggleStatus = (status: boolean) => {
+    if (status) {
+      Alert.alert('Ativar anúncio', 'Ao ativar o anúncio do imóvel, ele se tornará visível no mapa e poderá ser encontrado por todos os usuários.', [
+        {
+          text: 'Cancelar',
+          style: 'cancel'
+        },
+        {
+          text: 'OK',
+          onPress: () => editStatusMutation.mutate({ status: true, id: data.id })
+        },
+      ])
+
+      return
+    }
+
+    Alert.alert('Desativar anúncio', 'Ao desativar o anúncio do imóvel, ele deixará de ser visível no mapa e não poderá ser encontrado por outros usuários.', [
+      {
+        text: 'Cancelar',
+        style: 'cancel'
+      },
+      {
+        text: 'OK',
+        onPress: () => editStatusMutation.mutate({ status: false, id: data.id })
+      },
+    ])
+
+    return
   }
 
   return (
@@ -200,6 +239,7 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
                 <Button
                   mode='text'
                   uppercase
+                  onPress={() => handleToggleStatus(false)}
                 >
                   <Text variant='titleMedium' style={styles.dangerBtn}>
                   Desativar
@@ -209,6 +249,7 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
                 <Button
                   mode='text'
                   uppercase
+                  onPress={() => handleToggleStatus(true)}
                 >
                   <Text variant='titleMedium' style={styles.dangerBtn}>
                   Ativar
