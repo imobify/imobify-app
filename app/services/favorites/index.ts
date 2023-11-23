@@ -4,7 +4,7 @@ import { PaginatedFavorite } from '@models/favorites'
 
 import api from '../client'
 
-export const getPaginatedFavorites = async (take: number, cursor: number | undefined): Promise<{favorites: PaginatedFavorite[], cursor: number | undefined}> => {
+export const getPaginatedFavorites = async (take: number, cursor: number | undefined): Promise<{content: PaginatedFavorite[], cursor: number | undefined}> => {
   try {
     const { data } = await api.get<PaginatedFavorite[]>('/favorites', {
       params: {
@@ -13,7 +13,7 @@ export const getPaginatedFavorites = async (take: number, cursor: number | undef
       }})
 
     return {
-      favorites: data,
+      content: data,
       cursor: data[data.length - 1]?.id || undefined
     }
   } catch (error) {

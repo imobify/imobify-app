@@ -43,7 +43,7 @@ export const getRealEstateById = async (id: number): Promise<RealEstate> => {
   }
 }
 
-export const getPaginatedRealEstates = async (take: number, cursor: number | undefined): Promise<{ realEstates: PaginatedRealEstate[], cursor: number | undefined }> => {
+export const getPaginatedRealEstates = async (take: number, cursor: number | undefined): Promise<{ content: PaginatedRealEstate[], cursor: number | undefined }> => {
   try {
     const { data } = await api.get<PaginatedRealEstate[]>('/real-estate', {
       params: {
@@ -53,7 +53,7 @@ export const getPaginatedRealEstates = async (take: number, cursor: number | und
     })
   
     return {
-      realEstates: data,
+      content: data,
       cursor: data[data.length - 1]?.id || undefined
     }
   } catch (error) {

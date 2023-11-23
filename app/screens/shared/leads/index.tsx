@@ -8,13 +8,14 @@ import { useUser } from '@stores/authStore'
 import ListItem from '@components/list-item'
 import { PaginatedLead } from '@models/lead'
 import { FlashList } from '@shopify/flash-list'
-import { LeadsTabNavigatorParams } from '@routes/types'
-import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
-import { useDeleteLeadMutation } from '@hooks/mutations/deleteLead'
-import { usePaginatedLeads } from '@hooks/queries/usePaginatedLeads'
-import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
-import { useNavigation } from '@react-navigation/native'
 import CustomTitle from '@components/custom-title'
+import { getPaginatedLeads } from '@services/leads'
+import { LeadsTabNavigatorParams } from '@routes/types'
+import { useNavigation } from '@react-navigation/native'
+import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
+import { usePaginatedList } from '@hooks/queries/usePaginatedList'
+import { useDeleteLeadMutation } from '@hooks/mutations/deleteLead'
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
 
 type Props = NativeStackScreenProps<LeadsTabNavigatorParams, 'list'>
 
@@ -98,7 +99,7 @@ const ListItemSeeker: React.FC<ListItemSeekerProps> = ({ item, refetch }: ListIt
 
 const Leads: React.FC<Props> = () => {
   const { userType } = useUser()
-  const { data, isLoading, isError, fetchNextPage, refetch } = usePaginatedLeads(10)
+  const { data, isLoading, isError, fetchNextPage, refetch } = usePaginatedList<PaginatedLead>('leads', getPaginatedLeads, 10)
 
   useRefreshOnFocus(refetch)
 
@@ -116,7 +117,7 @@ const Leads: React.FC<Props> = () => {
     )
   }
 
-  const flattenedData = data.pages.flatMap(page => page.leads)
+  const flattenedData = data.pages.flatMap(page => page.content)
 
   return (
     <SafeAreaView style={{ flex: 1, paddingTop: 32 }}>

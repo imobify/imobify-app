@@ -4,7 +4,7 @@ import { PaginatedLead } from '@models/lead/PaginatedLead'
 
 import api from '../client'
 
-export const getPaginatedLeads = async (take: number, cursor: number | undefined): Promise<{leads: PaginatedLead[], cursor: number | undefined}> => {
+export const getPaginatedLeads = async (take: number, cursor: number | undefined): Promise<{content: PaginatedLead[], cursor: number | undefined}> => {
   try {
     const { data } = await api.get<PaginatedLead[]>('/leads', {
       params: {
@@ -13,7 +13,7 @@ export const getPaginatedLeads = async (take: number, cursor: number | undefined
       }})
 
     return {
-      leads: data,
+      content: data,
       cursor: data[data.length - 1]?.id || undefined
     }
   } catch (error) {

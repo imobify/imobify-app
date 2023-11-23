@@ -3,17 +3,20 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import Loading from '@components/loading'
 import ListItem from '@components/list-item'
-import CustomTitle from '@components/custom-title'
 import { FlashList } from '@shopify/flash-list'
+import CustomTitle from '@components/custom-title'
 import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
 import { RealEstateTabNavigatorParams } from '@routes/types'
+import { getPaginatedRealEstates } from '@services/real-estate'
+import { usePaginatedList } from '@hooks/queries/usePaginatedList'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { usePaginatedRealEstates } from '@hooks/queries/usePaginatedRealEstates'
+import { PaginatedRealEstate } from '@models/realEstate/PaginatedRealEstate'
 
 type Props = NativeStackScreenProps<RealEstateTabNavigatorParams, 'list'>
 
 const RealEstateList: React.FC<Props> = ({ navigation }: Props) => {
-  const { data, isLoading, isError, fetchNextPage, refetch } = usePaginatedRealEstates(10)
+  // const { data, isLoading, isError, fetchNextPage, refetch } = usePaginatedRealEstates(10)
+  const { data, isLoading, isError, fetchNextPage, refetch } = usePaginatedList<PaginatedRealEstate>('real-estate', getPaginatedRealEstates, 10)
 
   useRefreshOnFocus(refetch)
 
@@ -31,7 +34,7 @@ const RealEstateList: React.FC<Props> = ({ navigation }: Props) => {
     )
   }
   
-  const flattenedData = data.pages.flatMap(page => page.realEstates)
+  const flattenedData = data.pages.flatMap(page => page.content)
   
   return (
     <SafeAreaView

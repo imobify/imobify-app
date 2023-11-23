@@ -7,12 +7,13 @@ import ListItem from '@components/list-item'
 import { FlashList } from '@shopify/flash-list'
 import CustomTitle from '@components/custom-title'
 import { PaginatedFavorite } from '@models/favorites'
-import { FavoritesTabNavigatorParams } from '@routes/types'
-import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
-import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
-import { useDeleteFavoriteMutation } from '@hooks/mutations/deleteFavorite'
-import { usePaginatedFavorites } from '@hooks/queries/usePaginatedFavorites'
 import { useNavigation } from '@react-navigation/native'
+import { FavoritesTabNavigatorParams } from '@routes/types'
+import { getPaginatedFavorites } from '@services/favorites'
+import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
+import { usePaginatedList } from '@hooks/queries/usePaginatedList'
+import { useDeleteFavoriteMutation } from '@hooks/mutations/deleteFavorite'
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
 
 type Props = NativeStackScreenProps<FavoritesTabNavigatorParams, 'list'>
 
@@ -67,7 +68,8 @@ const FavoriteListItem: React.FC<FavoriteListItemProps> = ({ item, refetch }: Fa
 }
 
 const Favorites: React.FC<Props> = () => {
-  const { data, isLoading, isError, fetchNextPage, refetch } = usePaginatedFavorites(10)
+  // const { data, isLoading, isError, fetchNextPage, refetch } = usePaginatedFavorites(10)
+  const { data, isLoading, isError, fetchNextPage, refetch } = usePaginatedList<PaginatedFavorite>('favorites', getPaginatedFavorites ,10)
 
   useRefreshOnFocus(refetch)
 
@@ -85,7 +87,7 @@ const Favorites: React.FC<Props> = () => {
     )
   }
 
-  const flattenedData = data.pages.flatMap(page => page.favorites)
+  const flattenedData = data.pages.flatMap(page => page.content)
 
   return (
     <SafeAreaView style={{ flex: 1, paddingTop: 32 }}>
