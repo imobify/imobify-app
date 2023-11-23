@@ -27,6 +27,10 @@ export const RealEstateSchema = yup.object({
     id: yup.number().required(),
     author_id: yup.string().uuid().required()
   })).required(),
+  favorites: yup.array().of(yup.object({
+    id: yup.number().required(),
+    author_id: yup.string().uuid().required()
+  })).required(),
   coordinates: yup.object({
     longitude: yup.number().required(),
     latitude: yup.number().required()

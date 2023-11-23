@@ -1,6 +1,6 @@
 import { Alert, ScrollView, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Avatar, Button, Divider, Text } from 'react-native-paper'
+import { Avatar, Button, Divider, FAB, Text } from 'react-native-paper'
 
 import Loading from '@components/loading'
 import { useUser } from '@stores/authStore'
@@ -18,12 +18,15 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useRealEstateDetails } from '@hooks/queries/useRealEstateDetails'
 
 import { styles } from './styles'
+import { toggleFavoriteStatus } from '@services/favorites'
+import { useDeleteFavoriteMutation } from '@hooks/mutations/deleteFavorite'
+import { theme } from '@theme'
 
 type Props = NativeStackScreenProps<HomeTabNavigatorParams, 'realEstate'>
 
 const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
   const { id } = route.params
-  const { userId } = useUser()
+  const { userId, userType } = useUser()
 
   const { data, isLoading, isError, refetch } = useRealEstateDetails(id)
 
@@ -42,8 +45,16 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
       refetch()
     }
   })
+
+  const createFavoriteMutation = useMutation({
+    mutationFn: toggleFavoriteStatus,
+    onSuccess: () => {
+      refetch()
+    }
+  })
   
   const deleteLeadMutation = useDeleteLeadMutation(refetch)
+  const deleteFavoriteMutation = useDeleteFavoriteMutation(refetch)
 
   if (isLoading) {
     return (
@@ -60,6 +71,9 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
   }
 
   const matchingLead = data.leads.find(lead => lead.author_id === userId)
+  const matchingFavorite = data.favorites.find(favorite => favorite.author_id === userId)
+
+  const isAlreadyFavorite = userType === 1 && matchingFavorite
 
   const handleToggleStatus = (status: boolean) => {
     if (status) {
@@ -89,6 +103,36 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
     ])
 
     return
+  }
+
+  const handleToggleFavorite = (status: boolean) => {
+    if (status) {
+      Alert.alert('Adicionar aos favoritos', 'Deseja adicionar o imóvel aos favoritos? Assim, você pode encontrá-lo novamente com facilidade na lista de favoritos.', [
+        {
+          text: 'Cancelar',
+          style: 'cancel'
+        },
+        {
+          text: 'OK',
+          onPress: () => createFavoriteMutation.mutate({ realEstateId: data.id })
+        },
+      ])
+  
+      return
+    } else {
+      Alert.alert('Remover dos favoritos', 'Tem certeza que deseja remover o imóvel dos favoritos?', [
+        {
+          text: 'Cancelar',
+          style: 'cancel'
+        },
+        {
+          text: 'Continuar',
+          onPress: () => deleteFavoriteMutation.mutate({ favoriteId: matchingFavorite!.id })
+        },
+      ])
+  
+      return
+    }
   }
 
   const handleToggleLead = (status: boolean) => {
@@ -327,6 +371,21 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
                 <Text variant='titleMedium' style={styles.primaryBtnText}>Remover interesse</Text>
               </Button>
             </View>
+          )}
+          {!isAlreadyFavorite ? (
+            <FAB 
+              icon='heart-plus'
+              style={styles.fab}
+              onPress={() => handleToggleFavorite(true)}
+              color={theme.colors.surface}
+            />
+          ) : (
+            <FAB 
+              icon='heart-remove'
+              style={styles.fab}
+              onPress={() => handleToggleFavorite(false)}
+              color={theme.colors.surface}
+            />
           )}
         </View>
       </ScrollView>

@@ -12,7 +12,9 @@ import { LeadsTabNavigatorParams } from '@routes/types'
 import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
 import { useDeleteLeadMutation } from '@hooks/mutations/deleteLead'
 import { usePaginatedLeads } from '@hooks/queries/usePaginatedLeads'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useNavigation } from '@react-navigation/native'
+import CustomTitle from '@components/custom-title'
 
 type Props = NativeStackScreenProps<LeadsTabNavigatorParams, 'list'>
 
@@ -26,10 +28,16 @@ type ListItemSeekerProps = {
   refetch: () => any
 }
 
+type NavigationType = NativeStackNavigationProp<LeadsTabNavigatorParams, 'list'>
+
 const ListItemAnnouncer: React.FC<ListItemAnnouncerProps> = ({ item }: ListItemAnnouncerProps) => {
+  const navigation = useNavigation<NavigationType>()
+
 
   return (
-    <ListItem.Root>
+    <ListItem.Root
+      onPress={() => navigation.navigate('realEstate', { id: item.realEstate_id })}
+    >
       {item.author && item.author.avatar_url ? (
         <ListItem.Left
           imageSource={{ uri: item.author!.avatar_url }}
@@ -46,6 +54,7 @@ const ListItemAnnouncer: React.FC<ListItemAnnouncerProps> = ({ item }: ListItemA
 }
 
 const ListItemSeeker: React.FC<ListItemSeekerProps> = ({ item, refetch }: ListItemSeekerProps) => {
+  const navigation = useNavigation<NavigationType>()
   const date = format(new Date(item.createdAt), 'dd/MM/yyyy - HH:mm')
   const deleteMutation = useDeleteLeadMutation(refetch)
 
@@ -65,7 +74,9 @@ const ListItemSeeker: React.FC<ListItemSeekerProps> = ({ item, refetch }: ListIt
   }
 
   return (
-    <ListItem.Root>
+    <ListItem.Root
+      onPress={() => navigation.navigate('realEstate', { id: item.realEstate_id })}
+    >
       {item.realEstate!.photos[0] && item.realEstate!.photos[0].photoUrl ? (
         <ListItem.Left
           imageSource={{ uri: item.realEstate!.photos[0].photoUrl }}
@@ -109,6 +120,11 @@ const Leads: React.FC<Props> = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, paddingTop: 32 }}>
+      <CustomTitle
+        style={{ marginLeft: 16 }}
+      >
+        {userType === 1 ? 'Meus Interesses' : 'Clientes Interessados'}
+      </CustomTitle>
       <FlashList 
         estimatedItemSize={100}
         data={flattenedData}

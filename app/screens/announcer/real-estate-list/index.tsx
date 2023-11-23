@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import Loading from '@components/loading'
 import ListItem from '@components/list-item'
+import CustomTitle from '@components/custom-title'
 import { FlashList } from '@shopify/flash-list'
 import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
 import { RealEstateTabNavigatorParams } from '@routes/types'
@@ -36,6 +37,11 @@ const RealEstateList: React.FC<Props> = ({ navigation }: Props) => {
     <SafeAreaView
       style={{ flex: 1, paddingTop: 32 }}
     >
+      <CustomTitle
+        style={{ marginLeft: 16 }}
+      >
+        Meus imóveis
+      </CustomTitle>
       <FlashList
         estimatedItemSize={100}
         data={flattenedData}

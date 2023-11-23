@@ -51,4 +51,11 @@ export const styles = StyleSheet.create({
   dangerBtn: { 
     color: 'red'
   },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: theme.colors.primary
+  }
 })

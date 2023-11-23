@@ -78,6 +78,7 @@ const ListItemContent: React.FC<ListItemContentProps> = ({ title, subtitles }: L
       </Text>
       {subtitles.map(subtitle => (
         <Text
+          style={styles.subtitle}
           key={subtitle}
         >
           {subtitle}
@@ -128,6 +129,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     maxWidth: '90%',
     fontWeight: '700'
+  },
+  subtitle: {
+    maxWidth: '90%',
   },
   rightIcon: {
     position: 'absolute',
