@@ -73,8 +73,6 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
   const matchingLead = data.leads.find(lead => lead.author_id === userId)
   const matchingFavorite = data.favorites.find(favorite => favorite.author_id === userId)
 
-  const isAlreadyFavorite = userType === 1 && matchingFavorite
-
   const handleToggleStatus = (status: boolean) => {
     if (status) {
       Alert.alert('Ativar anúncio', 'Ao ativar o anúncio do imóvel, ele se tornará visível no mapa e poderá ser encontrado por todos os usuários.', [
@@ -372,21 +370,21 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
               </Button>
             </View>
           )}
-          {!isAlreadyFavorite ? (
+          {userType === 1 && !matchingFavorite ? (
             <FAB 
               icon='heart-plus'
               style={styles.fab}
               onPress={() => handleToggleFavorite(true)}
               color={theme.colors.surface}
             />
-          ) : (
+          ) : userType === 1 && matchingFavorite ? (
             <FAB 
               icon='heart-remove'
               style={styles.fab}
               onPress={() => handleToggleFavorite(false)}
               color={theme.colors.surface}
             />
-          )}
+          ) : null}
         </View>
       </ScrollView>
     </SafeAreaView>
