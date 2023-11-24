@@ -2,6 +2,7 @@ import { User } from '@models/user'
 import api from '../client'
 import { useToastStore } from '@stores/toastStore'
 import { generateRandomString } from '@utils/randomString'
+import { EditUserType } from '@screens/shared/signup/schemas/edit-user'
 
 export const getCurrentUser = async (): Promise<User | undefined> => {
   try {
@@ -36,5 +37,18 @@ export const updateAvatar = async (data: { uri: string, userId: string }) => {
   } catch (error) {
     console.error(error)
     useToastStore.getState().show('Não foi possível atualizar a foto de perfil.')
+  }
+}
+
+export const editUser = async (data: { id: string, form: EditUserType}) => {
+  try {
+    const { id, form } = data
+  
+    const response = await api.patch<User>(`users/${id}`, form)
+  
+    return response.data
+  } catch (error) {
+    console.error(error)
+    useToastStore.getState().show('Algo deu errado, não foi possível editar o perfil.')
   }
 }

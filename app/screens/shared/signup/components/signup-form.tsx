@@ -5,23 +5,21 @@ import { Formik } from 'formik'
 import { ScrollView } from 'react-native'
 import { Button, Text, TextInput } from 'react-native-paper'
 
-import { AuthStackParamList } from '@routes/types'
-import { useNavigation } from '@react-navigation/native'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-
 import { styles } from '../styles'
 import { signupFormSchema, SignupFormType } from '../schemas/signup-form'
+import { editUserSchema } from '../schemas/edit-user'
 
-type NavigationType = NativeStackNavigationProp<AuthStackParamList, 'signup'>
+type SignupFormProps = {
+  initialValues: SignupFormType,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onFormSubmit: (data: SignupFormType) => Promise<any> | void
+  submitButtonText: string
+  mode: 'signup' | 'edit'
+}
 
-const SignupForm = () => {
-  const navigation = useNavigation<NavigationType>()
+const SignupForm: React.FC<SignupFormProps> = ({ mode, initialValues, onFormSubmit, submitButtonText }: SignupFormProps) => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-
-  const handleInitialSubmit = (data: SignupFormType) => {
-    navigation.navigate('userType', data)
-  }
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword)
@@ -34,18 +32,11 @@ const SignupForm = () => {
   return (
     <ScrollView>
       <Formik
-        initialValues={{
-          name: '',
-          email: '',
-          phone: '',
-          document: '',
-          password: '',
-          confirmPassword: ''
-        }}
-        onSubmit={(values) => handleInitialSubmit(values)}
-        validationSchema={signupFormSchema}
+        initialValues={initialValues}
+        onSubmit={onFormSubmit}
+        validationSchema={mode === 'signup' ? signupFormSchema : editUserSchema}
       >
-        {({ handleChange, handleSubmit, isSubmitting, setFieldTouched, errors, touched }) => (
+        {({ handleChange, handleSubmit, setFieldTouched, errors, touched, values }) => (
           <>
             <TextInput
               style={styles.formInput}
@@ -56,6 +47,7 @@ const SignupForm = () => {
               onFocus={() => setFieldTouched('document')}
               label='CPF/CNPJ'
               placeholder='Digite seu CPF/CNPJ.'
+              value={values.document}
             />
             {touched.document && errors.document ? (
               <Text
@@ -73,6 +65,7 @@ const SignupForm = () => {
               onFocus={() => setFieldTouched('name')}
               label='Nome'
               placeholder='Digite seu nome.'
+              value={values.name}
             />
             {touched.name && errors.name ? (
               <Text
@@ -91,6 +84,7 @@ const SignupForm = () => {
               onFocus={() => setFieldTouched('email')}
               label='Email'
               placeholder='Digite seu email.'
+              value={values.email}
             />
             {touched.email && errors.email ? (
               <Text
@@ -109,6 +103,7 @@ const SignupForm = () => {
               onFocus={() => setFieldTouched('phone')}
               label='Telefone'
               placeholder='Digite seu telefone ou celular.'
+              value={values.phone}
             />
             {touched.phone && errors.phone ? (
               <Text
@@ -127,6 +122,7 @@ const SignupForm = () => {
               onFocus={() => setFieldTouched('password')}
               label='Senha'
               placeholder='Digite sua senha.'
+              value={values.password}
             />
             {touched.password && errors.password ? (
               <Text
@@ -145,6 +141,7 @@ const SignupForm = () => {
               onFocus={() => setFieldTouched('confirmPassword')}
               label='Confirme a senha'
               placeholder='Confirme a senha.'
+              value={values.confirmPassword}
             />
             {touched.confirmPassword && errors.confirmPassword ? (
               <Text
@@ -155,14 +152,14 @@ const SignupForm = () => {
 
             ) : null}
             <Button
-              style={styles.formInput}
-              loading={isSubmitting}
+              style={styles.formBtn}
               mode='contained'
               onPress={() => handleSubmit()}
-              disabled={isSubmitting}
               buttonColor={theme.colors.primary}
             >
-              <Text variant='titleMedium' style={{ color: theme.colors.surface }}>Cadastrar-se</Text>
+              <Text variant='titleMedium' style={{ color: theme.colors.surface }}>
+                {submitButtonText}
+              </Text>
             </Button>
           </>
         )}

@@ -11,12 +11,16 @@ export type AuthStackParamList = {
 export type CommonNavigatorParams = {
   realEstate: { id: number }
   realEstateForm: { id: number | undefined, data: ParsedRealEstate },
-  editProfile: { 
-    id: string | undefined
-    name: string | undefined
-    document: string | undefined
-    email: string | undefined
-    phone: string | undefined
+  editProfile: {
+    id: string
+    initialValues: {
+      name: string
+      document: string
+      email: string
+      phone: string
+      password: string
+      confirmPassword: string
+    }
   },
   editAvatar: {
     avatar: string
