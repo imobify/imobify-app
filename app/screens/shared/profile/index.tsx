@@ -23,7 +23,7 @@ const Profile: React.FC<Props> = ({ navigation }: Props) => {
 
   useRefreshOnFocus(refetch)
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return (
       <Loading />
     )
@@ -61,7 +61,7 @@ const Profile: React.FC<Props> = ({ navigation }: Props) => {
   }
 
   const handleLogout = () => {
-    Alert.alert('Logout', 'Deseja mesmo fazer logout?', [
+    Alert.alert('Logout', 'Deseja mesmo sair da sua conta?', [
       {
         text: 'Cancelar',
         style: 'cancel'
@@ -161,11 +161,15 @@ const Profile: React.FC<Props> = ({ navigation }: Props) => {
         icon={() => <MaterialCommunityIcons name='pencil' size={18} color='white'  />}
         style={styles.editBtn}
         onPress={() => navigation.navigate('editProfile', {
-          id: data?.id,
-          document: data?.document,
-          email: data?.email,
-          phone: data?.phone,
-          name: data?.name
+          initialValues: {
+            document: data.document,
+            email: data.email,
+            phone: data.phone,
+            name: data.name,
+            password: '',
+            confirmPassword: ''
+          },
+          id: data.id
         })}
       >
         Editar
