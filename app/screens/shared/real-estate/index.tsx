@@ -343,7 +343,8 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
                 </Button>
               )}
             </View>
-          ) : !matchingLead ? (
+          ) : null}
+          {userType === 1 && !matchingLead ? (
             <View
               style={styles.buttons}
             >
@@ -356,7 +357,7 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
                 <Text variant='titleMedium' style={styles.primaryBtnText}>Tenho interesse</Text>
               </Button>
             </View>
-          ) : (
+          ) : userType === 1 && matchingLead ? (
             <View
               style={styles.buttons}
             >
@@ -369,6 +370,8 @@ const RealEstate: React.FC<Props> = ({ route, navigation }: Props) => {
                 <Text variant='titleMedium' style={styles.primaryBtnText}>Remover interesse</Text>
               </Button>
             </View>
+          ) : (
+            <View style={styles.buttons}></View>
           )}
           {userType === 1 && !matchingFavorite ? (
             <FAB 
