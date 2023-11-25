@@ -14,6 +14,7 @@ import { useNearbyRealEstates } from '@hooks/queries/useNearbyRealEstates'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { customMapStyle, styles } from './styles'
+import SearchBar from '@components/searchbar'
 
 type Props = NativeStackScreenProps<HomeTabNavigatorParams, 'home'>
 
@@ -40,6 +41,11 @@ const Home: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {userType === 1 ? (
+        <SearchBar 
+          style={styles.searchBar}
+        />
+      ) : null}
       <MapView
         style={styles.map}
         initialRegion={{
@@ -75,9 +81,6 @@ const Home: React.FC<Props> = ({ navigation }: Props) => {
         <FAB 
           icon='plus'
           style={styles.fab}
-          // onPress={() => navigation.getParent()?.navigate('realEstateRoutes', { screen: 'form', params: {
-          //   data: undefined
-          // } })}
           onPress={() => navigation.dispatch(StackActions.push('realEstateForm', { id: undefined, data: {
             title: '',
             description: '',

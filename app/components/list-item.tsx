@@ -1,5 +1,5 @@
 import { theme } from '@theme'
-import { View } from 'react-native'
+import { View, ViewStyle } from 'react-native'
 import { StyleSheet, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { TouchableOpacityProps } from 'react-native'
@@ -10,15 +10,16 @@ import { AvatarImageSource } from 'react-native-paper/lib/typescript/components/
 
 type ListItemLeftProps = {
   imageSource?: AvatarImageSource
-  icon?: IconSource
+  icon?: IconSource,
+  imageSize?: number
 }
 
-const ListItemLeft: React.FC<ListItemLeftProps> = ({ imageSource, icon }: ListItemLeftProps) => {
+const ListItemLeft: React.FC<ListItemLeftProps> = ({ imageSource, icon, imageSize }: ListItemLeftProps) => {
   if (imageSource) {
     return (
       <Avatar.Image 
         source={imageSource}
-        size={64}
+        size={imageSize || 64}
       />
     )
   } else {
@@ -89,14 +90,15 @@ const ListItemContent: React.FC<ListItemContentProps> = ({ title, subtitles }: L
 }
 
 type Props = {
-  children: React.ReactNode
+  children: React.ReactNode,
+  customStyle?: ViewStyle
 } & TouchableOpacityProps
 
-const ListItemRoot: React.FC<Props> = ({ children, ...rest }: Props) => {
+const ListItemRoot: React.FC<Props> = ({ children, customStyle, ...rest }: Props) => {
   return (
     <TouchableOpacity
       {...rest}
-      style={styles.container}
+      style={{...styles.container, ...customStyle}}
     >
       {children}
     </TouchableOpacity>

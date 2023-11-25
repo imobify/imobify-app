@@ -6,6 +6,12 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  searchBar: {
+    position: 'absolute',
+    width: '100%',
+    top: 48,
+    zIndex: 999
+  },
   map: {
     flex: 1,
     width: '100%',

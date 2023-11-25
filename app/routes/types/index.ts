@@ -28,8 +28,7 @@ export type CommonNavigatorParams = {
 }
 
 export type HomeTabNavigatorParams = CommonNavigatorParams & {
-  home: undefined,
-  realEstate: { id: number }
+  home: undefined
 }
 
 export type LeadsTabNavigatorParams = CommonNavigatorParams & {

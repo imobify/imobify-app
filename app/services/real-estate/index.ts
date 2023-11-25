@@ -9,6 +9,7 @@ import { PaginatedRealEstate } from '@models/realEstate/PaginatedRealEstate'
 import api from '../client'
 import { AddForm } from '@screens/announcer/real-estate-form/schemas/add-form'
 import { AddEditForm } from '@screens/announcer/real-estate-form/schemas/add-edit-form'
+import { SearchRealEstate } from '@models/realEstate/SearchRealEstate'
 
 const googleGeocodingApiKey = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? ''
 
@@ -28,6 +29,20 @@ export const getNearbyRealEstates = async (coordinates: LocationObject | null) =
     console.error(error)
     useToastStore.getState().show('Um erro ocorreu, tente novamente.')
     throw error
+  }
+}
+
+export const searchRealEstates = async (query: string): Promise<SearchRealEstate[]> => {
+  const response = await api.get<SearchRealEstate[]>('/real-estate/search', { 
+    params: {
+      q: query
+    }
+  })
+
+  if (response.data.length) {
+    return response.data
+  } else {
+    return []
   }
 }
 
