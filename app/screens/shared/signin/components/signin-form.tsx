@@ -31,6 +31,7 @@ const SigninForm = () => {
         {({ handleSubmit, handleChange, errors, setFieldTouched, touched }) => (
           <>
             <TextInput
+              style={styles.formInput}
               left={<TextInput.Icon icon='email' color={theme.colors.primary} />}
               mode='flat'
               keyboardType='email-address'
@@ -62,7 +63,7 @@ const SigninForm = () => {
 
             ) : null}
             <Button
-              style={styles.formInput}
+              style={{ marginTop: 16 }}
               mode='contained'
               onPress={() => handleSubmit()}
               buttonColor={theme.colors.primary}

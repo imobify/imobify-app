@@ -28,7 +28,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 50,
   },
   formInput: {
-    marginTop: 16
+    marginTop: 16,
+    backgroundColor: theme.colors.surface
   },
   errorMessage: {
     color: 'red'
