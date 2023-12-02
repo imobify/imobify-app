@@ -52,6 +52,7 @@ type Props = {
 const AddEditForm: React.FC<Props> = ({ id, data }: Props) => {
   const navigation = useNavigation<NavigationType>()
   const [initialValues, setInitialValues] = useState<RealEstateForm>({ ...data })
+  const [loading, setLoading] = useState(false)
   const [isRent, setIsRent] = useState(!!data.renting_value)
   const [isSale, setIsSale] = useState(!!data.selling_value)
   const [hasTax, setHasTax] = useState(!!data.tax_value)
@@ -81,13 +82,15 @@ const AddEditForm: React.FC<Props> = ({ id, data }: Props) => {
   })
 
   const handleFormSubmit = async (data: RealEstateForm) => {
+    setLoading(true)
     if (id !== undefined) {
       const validatedData = await addEditFormSchema.validate(data)
-      editMutation.mutateAsync({ ...validatedData, id })
+      await editMutation.mutateAsync({ ...validatedData, id })
     } else {
       const validatedData = await addFormSchema.validate(data)
-      createMutation.mutateAsync(validatedData)
+      await createMutation.mutateAsync(validatedData)
     }
+    setLoading(false)
   }
 
   return (
@@ -421,7 +424,8 @@ const AddEditForm: React.FC<Props> = ({ id, data }: Props) => {
                 mode='contained'
                 icon='check'
                 style={styles.primaryBtn}
-                disabled={createMutation.isLoading}
+                disabled={loading}
+                loading={loading}
               >
                 <Text variant='titleMedium' style={styles.primaryBtnText}>Salvar</Text>
               </Button>
