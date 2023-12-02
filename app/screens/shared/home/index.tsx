@@ -1,41 +1,66 @@
-import { theme } from '@theme'
-import { FAB, Text } from 'react-native-paper'
-import MapView, { Marker } from 'react-native-maps'
+import { useCallback, useEffect, useRef, useState } from 'react'
+
+import { FAB } from 'react-native-paper'
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
+import { getCurrentPositionAsync, LocationAccuracy, LocationObject, requestForegroundPermissionsAsync, watchPositionAsync } from 'expo-location'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { StackActions, useFocusEffect } from '@react-navigation/native'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import Loading from '@components/loading'
 import { useUser } from '@stores/authStore'
-import useLocation from '@hooks/useLocation'
+import SearchBar from '@components/searchbar'
+import { QueryClient } from '@tanstack/react-query'
+import { GetNearResponse } from '@models/realEstate'
 import { HomeTabNavigatorParams } from '@routes/types'
-import { StackActions } from '@react-navigation/native'
-import { useRefreshOnFocus } from '@hooks/useRefreshOnFocus'
+import { getNearbyRealEstates } from '@services/real-estate'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { useNearbyRealEstates } from '@hooks/queries/useNearbyRealEstates'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { theme } from '@theme'
 
 import { customMapStyle, styles } from './styles'
-import SearchBar from '@components/searchbar'
 
 type Props = NativeStackScreenProps<HomeTabNavigatorParams, 'home'>
 
 const Home: React.FC<Props> = ({ navigation }: Props) => {
+  const [realEstates, setRealEstates] = useState<GetNearResponse>([])
+  const [location, setLocation] = useState<LocationObject | null>(null)
+  const [loading, setLoading] = useState(true)
+  const mapRef = useRef<MapView>(null)
   const { userType } = useUser()
-  const { location } = useLocation()
-  const { data, isLoading, isError, refetch } = useNearbyRealEstates(location)
 
-  useRefreshOnFocus(refetch)
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        const queryClient = new QueryClient()
+        const { granted } = await requestForegroundPermissionsAsync()
+  
+        if (granted) {
+          const location = await getCurrentPositionAsync()
+          setLocation(location)
+          const data = await queryClient.fetchQuery({ queryKey: ['nearby-real-estates'], queryFn: async () => await getNearbyRealEstates(location) })
+          setRealEstates(data)
+          setLoading(false)
+        }
+      })()
+    }, [])
+  )
 
-  if (!location || isLoading || !data) {
+  useEffect(() => {
+    watchPositionAsync({
+      accuracy: LocationAccuracy.Highest,
+      timeInterval: 1000,
+      distanceInterval: 100
+    }, (response) => {
+      setLocation(response)
+      mapRef.current?.animateCamera({
+        center: response.coords
+      })
+    })
+  }, [])
+
+  if (loading || !location) {
     return (
       <Loading />
-    )
-  }
-
-  if (isError) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text>ERROR...</Text>
-      </SafeAreaView>
     )
   }
 
@@ -47,6 +72,8 @@ const Home: React.FC<Props> = ({ navigation }: Props) => {
         />
       ) : null}
       <MapView
+        provider={PROVIDER_GOOGLE}
+        ref={mapRef}
         style={styles.map}
         initialRegion={{
           longitude: location.coords.longitude,
@@ -64,7 +91,7 @@ const Home: React.FC<Props> = ({ navigation }: Props) => {
         >
           <MaterialCommunityIcons name='map-marker' color='#27a8e8' size={36} />
         </Marker>
-        {data.map((realEstate) => (
+        {realEstates!.map((realEstate) => (
           <Marker 
             key={realEstate.id}
             coordinate={{
