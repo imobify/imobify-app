@@ -11,7 +11,7 @@ import { AddForm } from '@screens/announcer/real-estate-form/schemas/add-form'
 import { AddEditForm } from '@screens/announcer/real-estate-form/schemas/add-edit-form'
 import { SearchRealEstate } from '@models/realEstate/SearchRealEstate'
 
-const googleGeocodingApiKey = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? ''
+const googleGeocodingApiKey = process.env.EXPO_PUBLIC_GOOGLE_API_KEY as string
 
 Geocoder.init(googleGeocodingApiKey)
 
