@@ -17,7 +17,7 @@ const CommonScreens = createNativeStackNavigator<CommonNavigatorParams>()
 const commonScreens = (Stack: typeof CommonScreens) => {
   return (
     <>
-      <HomeTab.Screen
+      <Stack.Screen
         name="realEstate"
         getComponent={() => RealEstate}
       />
